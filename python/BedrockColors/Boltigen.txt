@@ -1,0 +1,67 @@
+15203136	150	210	215	Aptychenkalk (Gueyraz)
+15203016	245	240	105	Coulaytes-Melange
+15203141	190	195	115	Perrières-Formation
+15203140	170	175	80	Hundsrügg-Formation
+15203109	250	180	90	Trias der Brekzien-Decke
+15203291	195	220	90	"Couches-Rouges der Klippen-Decke, undifferenziert"
+15202134	245	150	50	Trias des Helvetikums
+15203242	185	215	110	Couches-Rouges der Brekzien-Decke
+15203135	155	195	0	Foraminiferenschichten (Gueyraz)
+15203082	165	215	230	Dorfflüe-Formation
+15203127	225	195	155	Châtillon-Formation
+15203104	165	220	235	Obere Brekzie
+15203034	240	140	120	Intyamon-Formation
+15203101	195	190	165	Chumi-Formation
+15203017	230	225	0	Cuvigne-Derrey-Formation
+15203095	250	200	75	Wiriehorn-Formation
+15203094	245	175	110	Erpilles-Member
+15203106	195	155	120	Untere Brekzie
+15203137	255	130	170	Radiolarit (Gueyraz)
+15203126	215	205	145	Biot-Formation
+15203129	205	200	150	Mocausa-Nagelfluh
+15203128	210	205	155	Rodomonts-Formation
+15203100	245	240	105	Mattes-Melange
+15203019	225	235	95	Chenaux-Rouges-Formation
+15203138	170	115	100	Filamentkalk (Gueyraz)
+15203130	255	255	100	Tissota-Melange
+15203040	140	180	225	Torrent-de-Lessoc-Formation
+15203133	195	195	110	Manche-Formation
+15203042	215	170	110	Col-de-Lys-Member
+15203125	120	170	160	Reidigen-Formation
+15203060	195	145	150	Plan-Falcon-Formation
+15203039	165	215	230	Moléson-Formation
+15203134	125	165	130	Fouyet-Formation
+15203276	250	175	50	Trias der Klippen-Decke
+15203275	185	145	200	Lias der Klippen-Decke
+15203054	180	140	200	Grande-Bonavau-Formation
+15203238	240	235	100	Buufal-Konglomerat
+15203062	250	200	100	Clôt-la-Cime-Formation
+15203041	195	140	110	Staldengraben-Formation
+15203088	190	165	135	Mytilus-Schichten
+15203043	205	155	125	Vanil-Carré-Member
+15203038	170	210	155	Sciernes-d'Albeuve-Formation
+15203239	210	185	185	Langel-Member
+15203089	185	160	130	Col-de-Cordon-Member
+15203244	190	190	105	Lamperehubel-Sandstein
+15203048	210	180	220	Heiti-Formation
+15203052	220	180	220	Petit-Liençon-Formation
+15203051	155	135	155	Creux-de-l'Ours-Schichten
+15203116	205	210	135	Hellstätt-Formation
+15203115	165	185	120	Flysch 2a tonig-sandig
+15203110	205	210	135	Gurnigel-Flysch
+15203114	165	185	140	Flysch 2b mit sandigen Turbiditen
+15203113	255	215	160	Flysch 3a mergelig-sandig
+15202440	200	150	125	Praz-Couquain-Formation
+15203112	225	215	180	Flysch 3b mit bioklastischen Turbiditen
+15202432	165	215	230	Jogne-Formation
+15203111	205	195	155	Flysch 4 mit siltigen Turbiditen
+15202436	240	220	180	Bifé-Formation
+15202307	255	255	200	Infrapräalpines Melange
+15203245	100	160	120	Gets-Ophiolith
+15203292	125	125	125	"Simmen-Flysch, undifferenziert"
+15203105	125	175	220	Obere Schiefer (Schistes Ardoisiers)
+15203243	250	180	80	Rauwacke der Brekzien-Decke
+15203272	195	155	120	Dogger der Klippen-Decke
+15203269	165	215	230	Malm der Klippen-Decke
+15203240	250	185	85	Obere Rauwacke der Klippen-Decke
+15203059	190	140	170	Col-de-Tompey-Formation

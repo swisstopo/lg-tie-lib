@@ -1,0 +1,48 @@
+15202006	255	245	165	Matt-Formation
+15202009	255	245	130	Elm-Formation
+15202011	240	235	105	Taveyannaz-Formation
+15202012	245	150	65	Palaeogen des Helvetikums
+15202013	255	225	125	Stad-Formation
+15202032	245	170	65	Buergen-Formation
+15202036	245	150	65	Euthal-Formation
+15202038	245	150	60	Einsiedeln-Member
+15202047	145	195	10	Kreide des Helvetikums
+15202048	135	155	90	Wang-Formation
+15202049	210	220	60	Amden-Mergel
+15202050	185	210	110	Seewen-Formation
+15202051	180	205	105	Choltal-Member
+15202052	245	155	155	Garschella-Formation
+15202053	245	150	150	Selun-Member
+15202064	240	150	150	Brisi-Member
+15202071	240	150	150	Gruenten-Member
+15202074	135	195	170	Rawil-Member
+15202075	195	200	155	Tierwis-Formation
+15202077	190	195	150	Drusberg-Member
+15202078	190	195	150	Altmann-Member
+15202079	195	185	75	Helvetischer Kieselkalk
+15202080	195	185	75	Kieselkalk-Echinodermenbrekzie
+15202084	160	210	120	Betlis-Formation
+15202089	135	180	100	Diphyoides-Kalk
+15202090	100	160	125	Vitznau-Mergel
+15202091	120	175	150	Oehrli-Formation
+15202092	65	150	140	Palfris-Formation
+15202093	165	200	195	Zementstein-Formation
+15202097	150	210	210	Quinten-Formation
+15202099	145	205	205	Mergelband
+15202100	110	175	190	Schilt-Formation
+15202108	235	200	160	Reischiben-Formation
+15202116	190	110	75	Bommerstein-Formation
+15202117	180	90	90	Mols-Member
+15202125	210	190	220	Sexmor-Formation
+15202128	190	155	200	Spitzmeilen-Formation
+15202131	170	120	180	Prodkamm-Formation
+15202136	255	215	155	Quarten-Formation
+15202139	250	180	90	Roeti-Formation
+15202300	135	195	170	Oberer Schrattenkalk
+15202301	133	190	172	Unterer Schrattenkalk
+15202302	140	210	210	Oberer Quinten-Kalk
+15202303	150	215	210	Unterer Quinten-Kalk
+15202362	250	250	200	Maettental-Melange
+15202383	115	170	145	«Oberer Oehrlikalk»
+15202384	90	160	145	«Oberer Oehrlimergel»
+15202385	115	170	145	«Unterer Oehrlikalk»
