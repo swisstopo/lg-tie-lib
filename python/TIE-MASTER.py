@@ -30,7 +30,7 @@ GAsheet = 143
 
 cur_dir = os.path.dirname(os.path.realpath(__file__))
 
-path_leg =  path_to_str(Path('./BedrockColors/').resolve())
+path_leg =  path_to_str(Path('./data/BedrockColors/').resolve())
 
 # DEM folder
 DemFolderPath = path_to_str(Path('./data/swissALTI3d').resolve())
