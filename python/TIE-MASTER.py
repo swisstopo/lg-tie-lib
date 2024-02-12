@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Tue Apr 13 13:33:55 2021
@@ -6,6 +7,8 @@ Created on Tue Apr 13 13:33:55 2021
 TIE - MASTER
 """
 
+import os
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -15,20 +18,28 @@ from TIE import TIE_core as TIEcr
 from TIE import TIE_load as TIEld
 from TIE import TIE_visual as TIEvis
 
+
+def path_to_str(obj):
+    if isinstance(obj, Path):
+        return str(obj)
+
 # %% DEFINE DATA
 
 sheet = 1226
 GAsheet = 143
 
-path_leg = r"D:\TIE\python\BedrockColors/"
+cur_dir = os.path.dirname(os.path.realpath(__file__))
+
+path_leg =  path_to_str(Path('./BedrockColors/').resolve())
 
 # DEM folder
-DemFolderPath = r"D:\TIE\data\swissALTI3d"
+DemFolderPath = path_to_str(Path('./data/swissALTI3d').resolve())
+
+
 
 
 # GEOCOVER V2 folder (SHP)
-GeocPath = r"D:\TIE\data\geocover"
-
+GeocPath = path_to_str(Path('./data/geocover/').resolve())
 # ANALYZED ZONE: Widdergalm (Boltigen, 1226)
 x = (2592150.0, 2593850.0)
 y = (1165850.0, 1167500.0)
@@ -69,6 +80,10 @@ traces = TIEld.findNeighType(traces, BEDrst)
 traces = TIEcr.tie(traces, DEM['x'], DEM['y'], np.flipud(DEM['z']), seg=True)
 faults = TIEcr.tie(faults, DEM['x'], DEM['y'], np.flipud(DEM['z']), seg=True)
 
+trace = traces[0]
+s = trace.Segment[0]
+chord = s.Chords[0]
+
 # # %% MANIPULATE TRACES AND SEGMENTS
 #
 # # no segmentation
@@ -107,7 +122,7 @@ my = my.astype(float)
 
 # define legend (based on a txt-file)
 
-legendfile = Path(path_leg + sheet_name + ".txt")
+legendfile = path_to_str(Path(path_leg, sheet_name + ".txt"))
 mc, cmap, formations = TIEvis.bed2cmap(BEDrst, legendfile, leg_labels=True)
 
 # %% SIGNAL HEIGHT DIAGRAM

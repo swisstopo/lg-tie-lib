@@ -21,8 +21,9 @@ class chord_OBJ(object):
 
 
 class chordPlane_OBJ(object):
-    def __init__(self, ID, normal, plane_orient, pole_orient, beta,
-                 dist_meters, dist_ratio):
+    def __init__(
+        self, ID, normal, plane_orient, pole_orient, beta, dist_meters, dist_ratio
+    ):
         self.id = ID
         self.normal = normal
         self.plane_orient = plane_orient
@@ -33,8 +34,7 @@ class chordPlane_OBJ(object):
 
 
 class geolMap_OBJ(object):
-    def __init__(self, name, mx, my, mz, BEDrst,
-                 BTraces, FTraces, ATraces, ORmeas):
+    def __init__(self, name, mx, my, mz, BEDrst, BTraces, FTraces, ATraces, ORmeas):
         self.name = name
         self.mx = mx
         self.my = my
@@ -47,8 +47,9 @@ class geolMap_OBJ(object):
 
 
 class segment_OBJ(object):
-    def __init__(self, ID, delta, index_N, index_R,
-                 chords, chordplanes, classID, signalheight):
+    def __init__(
+        self, ID, delta, index_N, index_R, chords, chordplanes, classID, signalheight
+    ):
         self.id = ID
         self.delta = delta
         self.ind_normal = index_N
