@@ -7,25 +7,31 @@ This script contains a set of general functions/methods that perform the
 core-steps of the TIE-method (i.e. the actual TIE-steps)
 """
 import copy
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 from TIE import TIE_classes as TIEclass
 from TIE import TIE_general as TIEgen
 
 
-def classifyTRACE(TRACES, pth=[3, 9, 18]):
-    """ TIE CLASSIFCATION
-    classifies a list of trace objects (trace_OBJ) based on TIE parameters
-    
-    INPUT:
-    ---------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
-    pth:        planarity thresholds for classification - must be of size 3.
-                default = [3, 9, 18]
-    RETURNS:
-    ---------
-    TRACES (same list) with added classification parameters to the trace 
-    object structure """
+def classifyTRACE(TRACES, pth=None):
+    """Classify traces based on TIE parameters.
+
+    Parameters
+    ----------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects to be classified.
+    pth : list of float or None, optional
+        Planarity thresholds for classification. If None, default thresholds
+        [3, 9, 18] will be used. Must be of size 3.
+
+    Returns
+    -------
+    list of trace objects (TIE_classes.trace_OBJ)
+        The input list of trace objects with added classification parameters.
+    """
+    if pth is None:
+        pth = [3, 9, 18]
 
     p1 = pth[0]
     p2 = pth[1]
@@ -34,14 +40,34 @@ def classifyTRACE(TRACES, pth=[3, 9, 18]):
     for T in TRACES:
         Seg = T.Segment
         for S in Seg:
-            aN = np.array([S.Chords[ci].alpha[0] for ci in range(np.size(S.Chords))
-                           if np.isnan(S.Chords[ci].alpha[0]) == False]).squeeze()
-            aR = np.array([S.Chords[ci].alpha[1] for ci in range(np.size(S.Chords))
-                           if np.isnan(S.Chords[ci].alpha[1]) == False]).squeeze()
-            bN = np.array([S.Chordplanes[cpi].beta[0] for cpi in range(np.size(S.Chordplanes))
-                           if np.isnan(S.Chordplanes[cpi].beta[0]) == False]).squeeze()
-            bR = np.array([S.Chordplanes[cpi].beta[1] for cpi in range(np.size(S.Chordplanes))
-                           if np.isnan(S.Chordplanes[cpi].beta[1]) == False]).squeeze()
+            aN = np.array(
+                [
+                    S.Chords[ci].alpha[0]
+                    for ci in range(np.size(S.Chords))
+                    if np.isnan(S.Chords[ci].alpha[0]) == False
+                ]
+            ).squeeze()
+            aR = np.array(
+                [
+                    S.Chords[ci].alpha[1]
+                    for ci in range(np.size(S.Chords))
+                    if np.isnan(S.Chords[ci].alpha[1]) == False
+                ]
+            ).squeeze()
+            bN = np.array(
+                [
+                    S.Chordplanes[cpi].beta[0]
+                    for cpi in range(np.size(S.Chordplanes))
+                    if np.isnan(S.Chordplanes[cpi].beta[0]) == False
+                ]
+            ).squeeze()
+            bR = np.array(
+                [
+                    S.Chordplanes[cpi].beta[1]
+                    for cpi in range(np.size(S.Chordplanes))
+                    if np.isnan(S.Chordplanes[cpi].beta[1]) == False
+                ]
+            ).squeeze()
 
             alpS = np.sum(aN + aR)
             alpD = np.abs(np.sum(aN) - np.sum(aR))
@@ -85,27 +111,35 @@ def classifyTRACE(TRACES, pth=[3, 9, 18]):
     return TRACES
 
 
-def changeTHseg(TRACES, X, Y, Z, n, amp=-10, newTH=[]):
-    """ CHANGE THRESHOLD FOR SEGMENTATION
-    changes the threshold, that defines the convexity size to segment the
-    traces for a specific trace n and performs the TIE on new segmentation
-    
-    INPUT
+def changeTHseg(TRACES, X, Y, Z, n, amp=-10, newTH=None):
+    """
+    Change Threshold For Segmentation.
+
+    Changes the threshold that defines the convexity size to segment the traces
+    for a specific trace n and performs the TIE on new segmentation.
+
+    Parameters
     ----------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
-    X, Y, Z:    coordinate vectors
-    n:          trace id of trace that is going to be analysed
-                with changed threshold
-    amp:        amplitude expressed in % by which the defined threshold
-                should be lowered (negative) or increased (positive).
-                default = -10
-    newTH:      newly defined convexity size threshold 
-                [peak prominence, peak width]. if newTH is defined, the
-                amplitude is ignored
-    OUTPUT
-    ----------
-    TRACES (same list) with adapted with adapted segmentation for specific
-    trace object"""
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    X, Y, Z : array_like
+        Coordinate vectors.
+    n : int
+        Trace ID of the trace that is going to be analyzed with changed threshold.
+    amp : float, optional
+        Amplitude expressed in % by which the defined threshold should be
+        lowered (negative) or increased (positive). Default is -10.
+    newTH : list or None, optional
+        Newly defined convexity size threshold [peak prominence, peak width].
+        If newTH is defined, the amplitude is ignored. Default is None.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with adapted segmentation for the specific trace object.
+    """
+    if newTH is None:
+        newTH = []  # Initialize the list here if it's None
 
     formthresh = TRACES[n - 1].convexityTH
     amp = (100 + amp) / 100
@@ -115,30 +149,34 @@ def changeTHseg(TRACES, X, Y, Z, n, amp=-10, newTH=[]):
         pthresh = [formthresh[0] * amp, formthresh[1] / amp]
 
     TRACES = clearTIE(TRACES, [n])
-    TRACESn = tie([TRACES[n - 1]], X, Y, Z, pth=[3, 9, 18],
-                  seg=True, peakthresh=pthresh)
+    TRACESn = tie(
+        [TRACES[n - 1]], X, Y, Z, pth=[3, 9, 18], seg=True, peakthresh=pthresh
+    )
     TRACES[n - 1] = TRACESn[0]
     TRACES[n - 1].convexityTH = pthresh
 
     return TRACES
 
 
-def clearTIE(TRACES, n=[]):
-    """ CLEAR TIE INFORMATION
-    clears/removes TIE information from trace objects, so as to only keep the
-    general structure: the positional indexes, the trace type and, their id.
-    It is recommended to clear the TIE information before re-running a new
-    TIE analysis (e.g. without segmentation)
-    
-    INPUT:
-    ---------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
-    n:          list of trace id's (integers) that designate the traces
-                to be cleared. if n = [] (default!), all traces will be
-                cleared
-    RETURNS:
-    ---------
-    TRACES (same list) with suppressed TIE information"""
+def clearTIE(TRACES, n=None):
+    """
+    Clear TIE information from trace objects.
+
+    Parameters
+    ----------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    n : list or None, optional
+        List of trace IDs (integers) that designate the traces to be cleared.
+        If n is None (default), all traces will be cleared.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with suppressed TIE information.
+    """
+    if n is None:
+        n = []  # Initialize the list here if it's None
 
     if np.size(n) == 0:
         n = np.arange(0, int(np.size(TRACES))).astype(int)
@@ -148,8 +186,7 @@ def clearTIE(TRACES, n=[]):
     for T in [TRACES[ni] for ni in n]:
         ltr = np.size(T.index)
         i_ind = np.arange(0, ltr).astype(int)
-        seg = TIEclass.segment_OBJ(1, [], i_ind, i_ind[::-1],
-                                   [], [], [], [])
+        seg = TIEclass.segment_OBJ(1, [], i_ind, i_ind[::-1], [], [], [], [])
         T.Segment = [seg]
         T.orientbar = []
         T.convexityTH = float("nan")
@@ -158,18 +195,20 @@ def clearTIE(TRACES, n=[]):
 
 
 def extractAlpha(TRACES):
-    """ EXTRACTS ALPHA SIGNAL FROM TRACE
-    extracts alpha signal - angular distance between each individual
-    connecting chord and the FIRST connecting chord
-    
-    INPUT:
-    ---------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
+    """
+    Extracts alpha signal from traces.
 
-    RETURNS:
-    ---------
-    TRACES (same list) with added alpha values for each trace_OBJ
-    (respectively each chord_OBJ)"""
+    Parameters
+    ----------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with added alpha values for each trace object (respectively
+        each chord object).
+    """
 
     for T in TRACES:
         Segment = T.Segment
@@ -192,18 +231,20 @@ def extractAlpha(TRACES):
 
 
 def extractBeta(TRACES):
-    """ EXTRACTS BETA SIGNAL FROM TRACE
-    extracts beta signal - angular difference between each individual
-    chordplane and the FIRST chord plane
-    
-    INPUT:
-    ---------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
+    """
+    Extracts beta signal from traces.
 
-    RETURNS:
-    ---------
-    TRACES (same list) with added beta values for each trace_OBJ
-    (respectively each chordPlane_OBJ)"""
+    Parameters
+    ----------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with added beta values for each trace object (respectively
+        each chordPlane object).
+    """
 
     for T in TRACES:
         Segment = T.Segment
@@ -219,12 +260,12 @@ def extractBeta(TRACES):
             betR = [TIEgen.angleBtwVec(CP.normal[1], refpR) for CP in ChdPlane]
 
             for j in range(1, np.size(betN)):
-                if (np.isnan(betN[j]) == False):
+                if np.isnan(betN[j]) == False:
                     if betN[j] - betN[j - 1] > 90:
                         betN[j] = np.abs(betN[j] - 180)
                         betN[j] = betN[j]
             for j in range(1, np.size(betR)):
-                if (np.isnan(betR[j]) == False):
+                if np.isnan(betR[j]) == False:
                     if betR[j] - betR[j - 1] > 90:
                         betR[j] = np.abs(betR[j] - 180)
                         betR[j] = betR[j]
@@ -238,20 +279,22 @@ def extractBeta(TRACES):
 
 
 def extractChdPlanes(TRACES, mX, mY, mZ):
-    """ EXTRACTS CHORD PLANES
-    extracts chord planes (2nd step of TIE) - planes linking two chords 
-    (oriented vectors), which themselves connect two points on a trace
-    
-    INPUT:
-    ---------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
-    mX,mY,mZ:   matrixes of coordinates of analyzed extent
+    """
+    Extracts chord planes from traces.
 
-    RETURNS:
-    ---------
-    TRACES (same list) with added list of chord plane objects
-    (TIE_classes.chordPlane_OBJ) to each trace_OBJ (respectively each 
-    segment_OBJ)"""
+    Parameters
+    ----------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    mX, mY, mZ : array-like
+        Matrices of coordinates of the analyzed extent.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with added list of chord plane objects (TIE_classes.chordPlane_OBJ)
+        to each trace object (respectively each segment object).
+    """
 
     mXfl = mX.flatten()
     mYfl = mY.flatten()
@@ -305,33 +348,51 @@ def extractChdPlanes(TRACES, mX, mY, mZ):
                 if poletrR < 0:
                     poletrR = 360 + poletrR
 
-                P1N = np.array([mXfl[indexsegN[i]],
-                                mYfl[indexsegN[i]],
-                                mZfl[indexsegN[i]]])
-                P2N = np.array([mXfl[indexsegN[i + step]],
-                                mYfl[indexsegN[i + step]],
-                                mZfl[indexsegN[i + step]]])
+                P1N = np.array(
+                    [mXfl[indexsegN[i]], mYfl[indexsegN[i]], mZfl[indexsegN[i]]]
+                )
+                P2N = np.array(
+                    [
+                        mXfl[indexsegN[i + step]],
+                        mYfl[indexsegN[i + step]],
+                        mZfl[indexsegN[i + step]],
+                    ]
+                )
 
                 P1P2N = P2N - P1N
-                distN = np.abs(np.dot(np.cross(v1N, v2N), P1P2N)) / np.linalg.norm(np.cross(v1N, v2N))
+                distN = np.abs(np.dot(np.cross(v1N, v2N), P1P2N)) / np.linalg.norm(
+                    np.cross(v1N, v2N)
+                )
                 distratioN = distN / tr_length_sum
 
-                P1R = np.array([mXfl[indexsegR[i]],
-                                mYfl[indexsegR[i]],
-                                mZfl[indexsegR[i]]])
-                P2R = np.array([mXfl[indexsegR[i + step]],
-                                mYfl[indexsegR[i + step]],
-                                mZfl[indexsegR[i + step]]])
+                P1R = np.array(
+                    [mXfl[indexsegR[i]], mYfl[indexsegR[i]], mZfl[indexsegR[i]]]
+                )
+                P2R = np.array(
+                    [
+                        mXfl[indexsegR[i + step]],
+                        mYfl[indexsegR[i + step]],
+                        mZfl[indexsegR[i + step]],
+                    ]
+                )
 
                 P1P2R = P2R - P1R
-                distR = np.abs(np.dot(np.cross(v1R, v2R), P1P2R)) / np.linalg.norm(np.cross(v1R, v2R))
+                distR = np.abs(np.dot(np.cross(v1R, v2R), P1P2R)) / np.linalg.norm(
+                    np.cross(v1R, v2R)
+                )
                 distratioR = distR / tr_length_sum
 
-                ChdPlane.append(TIEclass.chordPlane_OBJ(i + 1, [normalN, normalR],
-                                                        [azimN, dipN, azimR, dipR],
-                                                        [poletrN, poleplN, poletrR, poleplR],
-                                                        [], [distN, distR],
-                                                        [distratioN, distratioR]))
+                ChdPlane.append(
+                    TIEclass.chordPlane_OBJ(
+                        i + 1,
+                        [normalN, normalR],
+                        [azimN, dipN, azimR, dipR],
+                        [poletrN, poleplN, poletrR, poleplR],
+                        [],
+                        [distN, distR],
+                        [distratioN, distratioR],
+                    )
+                )
             S.Chordplanes = ChdPlane
         T.Segment = Segment
 
@@ -339,18 +400,22 @@ def extractChdPlanes(TRACES, mX, mY, mZ):
 
 
 def extractChords(TRACES, mX, mY, mZ):
-    """ EXTRACTS CONNECTING CHORDS
-    extracts connecting chords of a trace set (1st step of TIE)
-    
-    INPUT:
-    ---------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
-    mX,mY,mZ:   matrixes of coordinates of analyzed extent
+    """
+    Extracts connecting chords of a trace set (1st step of TIE).
 
-    RETURNS:
-    ---------
-    TRACES (same list) with added list of chords (TIE_classes.chords_OBJ) 
-    to each trace_OBJ (respectively each segment_OBJ)"""
+    Parameters
+    ----------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    mX, mY, mZ : array-like
+        Matrices of coordinates of the analyzed extent.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with added list of chords (TIE_classes.chords_OBJ)
+        to each trace object (respectively each segment object).
+    """
 
     mXfl = mX.flatten()
     mYfl = mY.flatten()
@@ -403,9 +468,15 @@ def extractChords(TRACES, mX, mY, mZ):
             for chd in range(lstr):
                 trendN[chd], plungeN[chd] = TIEgen.vect2angle(chordsN[chd, :])
                 trendR[chd], plungeR[chd] = TIEgen.vect2angle(chordsR[chd, :])
-                Chords.append(TIEclass.chord_OBJ(chd + 1, [chordsN[chd, :], chordsR[chd, :]],
-                                                 [trendN[chd], trendR[chd]],
-                                                 [plungeN[chd], plungeR[chd]], []))
+                Chords.append(
+                    TIEclass.chord_OBJ(
+                        chd + 1,
+                        [chordsN[chd, :], chordsR[chd, :]],
+                        [trendN[chd], trendR[chd]],
+                        [plungeN[chd], plungeR[chd]],
+                        [],
+                    )
+                )
             S.Chords = Chords
         T.Segment = Segment
 
@@ -413,18 +484,23 @@ def extractChords(TRACES, mX, mY, mZ):
 
 
 def extractOrientBars(TRACES):
-    """ EXTRACTION OF ORIENTATION BARS (TIE)
-    extracts orientation bars from chord planes. Chord plane values are
+    """
+    Extraction of orientation bars (TIE).
+
+    Extracts orientation bars from chord planes. Chord plane values are
     distributed along the trace.
-    
-    INPUT
+
+    Parameters
     ----------
-    TRACES:     list of trace_OBJ containing basic TRACE information 
-                (any TRACE set, could also be FAULTS)            
-          
-    RETURNS
-    ----------  
-    TRACES (same list) with added orientation bar values to trace_OBJ """
+    TRACES : list of trace_OBJ
+        List of trace objects containing basic TRACE information
+        (any TRACE set, could also be FAULTS).
+
+    Returns
+    -------
+    TRACES : list of trace_OBJ
+        List with added orientation bar values to each trace object.
+    """
 
     for T in TRACES:
         Segment = T.Segment
@@ -435,10 +511,16 @@ def extractOrientBars(TRACES):
             betI = [S.Chordplanes[bi].beta[1] for bi in range(np.size(S.Chordplanes))]
 
             if np.sum(bet) > np.sum(betI):
-                orp = [S.Chordplanes[bi].plane_orient[2:] for bi in range(np.size(S.Chordplanes))]
+                orp = [
+                    S.Chordplanes[bi].plane_orient[2:]
+                    for bi in range(np.size(S.Chordplanes))
+                ]
                 si = S.ind_reverse
             else:
-                orp = [S.Chordplanes[bi].plane_orient[:2] for bi in range(np.size(S.Chordplanes))]
+                orp = [
+                    S.Chordplanes[bi].plane_orient[:2]
+                    for bi in range(np.size(S.Chordplanes))
+                ]
                 si = S.ind_normal
 
             d = S.delta[0]
@@ -466,26 +548,32 @@ def extractOrientBars(TRACES):
 
 
 def mergeSeg(TRACES, n, s, X, Y, Z):
-    """ MERGES SEGMENTS
-    merges two or more segments of a certain trace (trace_OBJ) into one single
-    segment and reclassifies it according to TIE
-    
-    INPUT
+    """
+    Merges two or more segments of a certain trace (trace_OBJ) into one single
+    segment and reclassifies it according to TIE.
+
+    Parameters
     ----------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
-    n:          id of specific trace_OBJ (only one trace_OBJ at a time)
-    s :         list of segments, that will be merged (e.g. [2,3])
-    X, Y, Z:    Coordinate vectors
-    
-    OUTPUT
-    ----------
-    TRACES (same list) with merged segments in specific trace_OBJ"""
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    n : int
+        ID of specific trace_OBJ (only one trace_OBJ at a time).
+    s : list
+        List of segments that will be merged (e.g., [2, 3]).
+    X, Y, Z : array-like
+        Coordinate vectors.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with merged segments in the specific trace_OBJ.
+    """
 
     s = [i - 1 for i in s]
     s.sort()
     for i in range(len(s) - 1):
         if abs(s[i] - s[i + 1]) > 1:
-            TIEgen.Mbox('ERROR', 'trace segments are not adjacent!!', 1)
+            TIEgen.Mbox("ERROR", "trace segments are not adjacent!!", 1)
 
     si = []
     # FIXME: list index out of range exception
@@ -513,19 +601,24 @@ def mergeSeg(TRACES, n, s, X, Y, Z):
 
 
 def mergeTraces(TRACES, tn, X, Y, Z, seg=False):
-    """ MERGES TRACES
-    merges two or more traces into one single trace object 
-    and reclassifies it according to TIE
-    
-    INPUT
+    """
+    Merges two or more traces into one single trace object
+    and reclassifies it according to TIE.
+
+    Parameters
     ----------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)
-    tn:         list of trace id's, that will be merged (e.g. [2,3])
-    X, Y, Z:    coordinate vectors
-    
-    OUTPUT
-    ----------
-    TRACES (same list) with merged traces (new id's)"""
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    tn : list
+        List of trace IDs that will be merged (e.g., [2, 3]).
+    X, Y, Z : array-like
+        Coordinate vectors.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with merged traces (new IDs).
+    """
 
     tni = [ti - 1 for ti in tn]
     ni = []
@@ -553,21 +646,27 @@ def mergeTraces(TRACES, tn, X, Y, Z, seg=False):
 
 
 def segSeg(TRACES, n, s, X, Y, Z):
-    """ SEGMENTATION OF SEGMENTS
-    analyses a certain trace segment for a potential segmentation at a 
-    more detailed scale. Important for long irregular traces that were not 
+    """
+    Analyses a certain trace segment for potential segmentation at a
+    more detailed scale. Important for long irregular traces that were not
     segmented during the first segmentation process.
- 
-    INPUT
+
+    Parameters
     ----------
-    TRACES:     list of trace objects (TIE_classes.trace_OBJ)  
-    n:          id of trace object that contains the segment 
-    s:          id of segment that will be re-analyzed for segmentation
-    X, Y, Z     coordinate vectors
-    
-    OUTPUT
-    ----------
-    TRACES (same list) with potentially added segments """
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    n : int
+        ID of the trace object that contains the segment.
+    s : int
+        ID of the segment that will be re-analyzed for segmentation.
+    X, Y, Z : array-like
+        Coordinate vectors.
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with potentially added segments.
+    """
 
     n = n - 1
     s = s - 1
@@ -605,23 +704,30 @@ def segSeg(TRACES, n, s, X, Y, Z):
 
 
 def segmentTRACE(TRACES, mX, mY, mZ, peakthresh=[100, 15]):
-    """ SEGMENTS TRACES AT CONVEXITIES
-    segments the traces at their inflexion points which are defined based on
-    a peak threshold
-    
-    INPUT
+    """
+    Segments the traces at their inflection points defined based on
+    a peak threshold.
+
+    Parameters
     ----------
-    TRACES:     list of trace_OBJ (TIE_classes.trace_OBJ)   
-    mX,mY,mZ:   matrixes of coordinates of analyzed extent
-    peakthresh: peak thresholds for convexity [peak prominence, peak width]
-                default: [100, 15]         
-    RETURNS
-    ----------  
-    TRACES (same list) with added segmentation where needed: list of
-    segment objectes (TIE_classes.segment_OBJ). Where no segmentation occured,
-    only one segment for one trace exists."""
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List of trace objects.
+    mX, mY, mZ : array-like
+        Matrices of coordinates of the analyzed extent.
+    peakthresh : list of float, optional
+        Peak thresholds for convexity [peak prominence, peak width].
+        Default is [100, 15].
+
+    Returns
+    -------
+    TRACES : list of trace objects (TIE_classes.trace_OBJ)
+        List with added segmentation where needed: list of
+        segment objects (TIE_classes.segment_OBJ). Where no segmentation occurred,
+        only one segment for one trace exists.
+    """
 
     import scipy
+
     mXfl = mX.flatten()
     mYfl = mY.flatten()
     mZfl = mZ.flatten()
@@ -662,16 +768,22 @@ def segmentTRACE(TRACES, mX, mY, mZ, peakthresh=[100, 15]):
                 anmean2[p] = (anmean2[m] + anmean2[p]) / 2
                 P = P + 1
 
-            anmean = np.cos(np.concatenate((anmean1[int(smo / 2):],
-                                            anmean2[-smo:int(-smo / 2)]))) * n
+            anmean = (
+                np.cos(
+                    np.concatenate(
+                        (anmean1[int(smo / 2) :], anmean2[-smo : int(-smo / 2)])
+                    )
+                )
+                * n
+            )
             prom = peakthresh[0]  # minimal peak prominence
             width = n / peakthresh[1]  # minimal peak width
 
             # find signal peaks (positive and negative)
-            ppi = scipy.signal.find_peaks(anmean,
-                                          prominence=prom, width=width)
-            npi = scipy.signal.find_peaks(-anmean + np.max(anmean),
-                                          prominence=prom, width=width)
+            ppi = scipy.signal.find_peaks(anmean, prominence=prom, width=width)
+            npi = scipy.signal.find_peaks(
+                -anmean + np.max(anmean), prominence=prom, width=width
+            )
             pind = np.sort(np.concatenate(([0], ppi[0], npi[0], [l - 1])))
             pval = anmean[pind]
 
@@ -713,7 +825,9 @@ def segmentTRACE(TRACES, mX, mY, mZ, peakthresh=[100, 15]):
                         New_S.ind_reverse = ind_normal[::-1]
                         T.Segment.append(New_S)
 
-                Last_S = TIEclass.segment_OBJ(np.size(seg) + 1, [], [], [], [], [], [], [])
+                Last_S = TIEclass.segment_OBJ(
+                    np.size(seg) + 1, [], [], [], [], [], [], []
+                )
                 ind_normal = np.arange(seg[-1], n)
                 Last_S.ind_normal = ind_normal
                 Last_S.ind_reverse = ind_normal[::-1]
@@ -723,25 +837,39 @@ def segmentTRACE(TRACES, mX, mY, mZ, peakthresh=[100, 15]):
     return TRACES
 
 
-def tie(TRACES, X, Y, Z, pth=[3, 9, 18], seg=False, peakthresh=[100, 15]):
-    """ TIE ANALYSIS
-    performs the entire TIE analysis, step by step
-    
-    INPUT
+def tie(
+    TRACES: List[TIEclass.trace_OBJ],
+    X: np.ndarray,
+    Y: np.ndarray,
+    Z: np.ndarray,
+    pth: List[int] = [3, 9, 18],
+    seg: bool = False,
+    peakthresh: List[int] = [100, 15],
+) -> List[TIEclass.trace_OBJ]:
+    """
+    Performs the entire TIE analysis, step by step.
+
+    Parameters
     ----------
-    TRACES:     list of trace_OBJ (TIE_classes.trace_OBJ)   
-    X,Y:        vectors of X and Y coordinates of analyzed extent
-    Z:          matrix of Z values of analyzed extent (size [len(X), len(Y)])
-    pth:        planarity thresholds for TIE classification.
-                default: [3,9,18]
-    seg:        boolean indicating if trace should first undergo a segmentation
-                process before extracting the trace information.
-                default: False
-    peakthresh: peak thresholds for convexity [peak prominence, peak width]
-                default: [90, 15] - is not used if seg=False       
-    RETURNS
-    ----------  
-    TRACES (same list) with added TIE information
+    TRACES : list of trace_OBJ (TIE_classes.trace_OBJ)
+        List of trace objects for TIE analysis.
+    X, Y : numpy.ndarray
+        Vectors of X and Y coordinates of the analyzed extent.
+    Z : numpy.ndarray
+        Matrix of Z values of the analyzed extent (size [len(X), len(Y)]).
+    pth : list of int, optional
+        Planarity thresholds for TIE classification. Default is [3, 9, 18].
+    seg : bool, optional
+        Boolean indicating if the trace should first undergo a segmentation
+        process before extracting the trace information. Default is False.
+    peakthresh : list of int, optional
+        Peak thresholds for convexity [peak prominence, peak width]. Default
+        is [90, 15], and it is not used if seg=False.
+
+    Returns
+    -------
+    TRACES : list of trace_OBJ
+        The same list with added TIE information.
     """
 
     [mX, mY] = np.meshgrid(X, Y)

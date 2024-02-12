@@ -8,21 +8,28 @@ linear algebra and connectivty issues. These functions are independent from
 the TIE-method, yet are used by it.
 """
 import math
-
 import numpy as np
+import platform
+import tkinter as tk
+from tkinter import messagebox
 
 
 def angle2normal(azim, dip):
-    """ ANGLE to NORMAL
-    calculates the normal of a plane (or a set of planes) defined with 
-    orientational angles in degrees - dip azimuth and dip 
-    (no specific location). 
-     ----------
-    INPUT
-    azim, dip -> angles of azimuth (dip azimuth) and dip of plane.  
-     ----------
-    OUTPUT
-    normal    -> normal vector: normal = [normalx,normaly,normalz] """
+    """
+    Calculate the normal vector of a plane (or set of planes) defined with orientational angles in degrees.
+
+    Parameters
+    ----------
+    azim : float or array_like
+        Angles of azimuth (dip azimuth) in degrees.
+    dip : float or array_like
+        Dip angles of the plane(s) in degrees.
+
+    Returns
+    -------
+    numpy.ndarray
+        Normal vector of the plane(s) in the form [normalx, normaly, normalz].
+    """
 
     dip = np.array(dip) * np.pi / 180
     azim = np.array(azim) * np.pi / 180
@@ -39,46 +46,63 @@ def angle2normal(azim, dip):
 
 
 def angle2vect(trend, plunge):
-    """ ANGLE to VECTOR
-    calculates the directional vector (length = 1) from a line defined by 
-    angles - trend and plunge
-     ----------
-    INPUT:
-    trend, plunge -> angles of trend (plunge azimuth) and plunge of 
-    directional vector.  
-     ----------
-    OUTPUT
-    vx, vy, vz  -> coordinates of oriented vector """
+    """
+    Calculate the directional vector (length = 1) from a line defined by angles - trend and plunge.
 
+    Parameters
+    ----------
+    trend : float or array_like
+        Angles of trend (plunge azimuth) in degrees.
+    plunge : float or array_like
+        Plunge angles of the directional vector in degrees.
+
+    Returns
+    -------
+    tuple of numpy.ndarray
+        Coordinates of the oriented vector in the form (vx, vy, vz).
+    """
+
+    # Convert angles to radians
     trend = np.array(trend) * np.pi / 180
     plunge = np.array(plunge) * np.pi / 180
 
+    # Handle single values or arrays
     if np.size(trend) == 1:
         trend = [trend]
         plunge = [plunge]
 
+    # Calculate coordinates of the oriented vector
     vz = [-np.sin(pl) for pl in plunge]
     vx = [np.sin(trend[k]) * np.cos(plunge[k]) for k in range(np.size(trend))]
     vy = [np.cos(trend[k]) * np.cos(plunge[k]) for k in range(np.size(trend))]
 
-    return [np.array(vx).T, np.array(vy).T, np.array(vz).T]
+    # Return the coordinates as a tuple of numpy arrays
+    return np.array(vx).T, np.array(vy).T, np.array(vz).T
 
 
 def angleBtwVec(v1, v2):
-    """ ANGLE BETWEEN 2 VECTORS
-    small angle between two directional oriented vectors
-     ----------
-    INPUT
-      -> v1: first vector (x,y,z)
-      -> v2: second vector (x,y,z)
-     ----------
-    OUTPUT
-      -> angle: angle between the two vectors """
+    """
+    Calculate the small angle between two directional oriented vectors.
+
+    Parameters
+    ----------
+    v1 : array_like
+        First vector in the form (x, y, z).
+    v2 : array_like
+        Second vector in the form (x, y, z).
+
+    Returns
+    -------
+    float
+        Angle between the two vectors in degrees.
+    """
 
     if len(np.shape(v1)) > 1:
         v1n = np.array([j / np.linalg.norm(j) for j in v1])
         v2n = np.array([k / np.linalg.norm(k) for k in v2])
-        dotv = np.array(np.round([np.dot(v1n[l], v2n[l].T) for l in range(len(np.shape(v1)))], 5))
+        dotv = np.array(
+            np.round([np.dot(v1n[l], v2n[l].T) for l in range(len(np.shape(v1)))], 5)
+        )
         angle = np.array([math.acos(dt) for dt in dotv])
     else:
         v1n = v1 / np.linalg.norm(v1)
@@ -89,18 +113,25 @@ def angleBtwVec(v1, v2):
 
 
 def azimRot(dip, trend, plunge):
-    """ AZIMUTH ACCORDING TO ROTATION AXIS AND DIP
-    calculates the azimth of a plane with a certain dip
+    """Azimuth according to rotation axis and dip.
+
+    Calculates the azimuth of a plane with a certain dip
     that goes through a rotation axis defined with trend and plunge angles.
-     ----------
-    INPUT
-    dip           -> angles of plane dip (angles degree °).  
-    trend, plunge -> angles of trend (plunge azimuth) and 
-                     plunge of rotational axis.       
-     ----------
-    OUTPUT
-    azim -> angles of plane dip azimuths (angles degree °) 
-            that pass through axis. """
+
+    Parameters
+    ----------
+    dip : float
+        Angles of plane dip (angles in degrees).
+    trend : float
+        Angles of trend (plunge azimuth) of the rotational axis.
+    plunge : float
+        Plunge of the rotational axis (angles in degrees).
+
+    Returns
+    -------
+    float
+        Angles of plane dip azimuths (angles in degrees) that pass through the axis.
+    """
 
     trend = trend / 180 * np.pi
     dip = dip / 180 * np.pi
@@ -111,18 +142,25 @@ def azimRot(dip, trend, plunge):
 
 
 def dipRot(azim, trend, plunge):
-    """ DIP ACCORDING TO ROTATION AXIS AND AZIMUTH
-    calculates the dip of a plane with a certain dip azimuth
+    """Dip According To Rotation Axis And Azimuth.
+
+    Calculates the dip of a plane with a certain dip azimuth
     that passes through a rotation axis defined with trend and plunge angles.
-     ----------
-    INPUT
-    azimuth       -> angles of plane dip azimuth (angles degree °) (no strike).  
-    trend, plunge -> angles of trend (plunge azimuth) and 
-                     plunge of rotational axis.       
-     ----------
-    OUTPUT
-    dip -> angles of plane dips (angles degree °) 
-            that pass through axis. """
+
+    Parameters
+    ----------
+    azim : float
+        Angles of plane dip azimuth (angles in degrees) (no strike).
+    trend : float
+        Angles of trend (plunge azimuth) of the rotational axis.
+    plunge : float
+        Plunge of the rotational axis (angles in degrees).
+
+    Returns
+    -------
+    float
+        Angles of plane dips (angles in degrees) that pass through the axis.
+    """
 
     trend = trend / 180 * np.pi
     azim = azim / 180 * np.pi
@@ -133,27 +171,39 @@ def dipRot(azim, trend, plunge):
 
 
 def distance(P1, P2):
-    """ DISTANCE BETWEEN TWO POINTS
-    calculates the shortest distance between two points in space.
-     ----------
-    INPUT
-    P1,P2   -> two points [x,y,z]  
-     ----------
-    OUTPUT
-    distance -> distance between two points """
+    """Calculate the shortest distance between two points in space.
+
+    Parameters
+    ----------
+    P1 : list
+        Coordinates of the first point [x, y, z].
+    P2 : list
+        Coordinates of the second point [x, y, z].
+
+    Returns
+    -------
+    float
+        Distance between two points.
+    """
 
     return ((P1[0] - P2[0]) ** 2 + (P1[1] - P2[1]) ** 2) ** 0.5
 
 
 def greatCircle(azim, dip):
-    """ GREAT CIRCLES
-    extracts coordinates of great circle of a given plane orientation 
+    """Extract coordinates of the great circle of a given plane orientation.
+
+    Parameters
     ----------
-    INPUT
-    azim, dip     -> angles of azimuth (dip azimuth) and dip of plane  
-    ----------
-    OUTPUT
-    [x_stereo, y_stereo]  -> coordinates of great circle points """
+    azim : float
+        Angle of azimuth (dip azimuth) of the plane.
+    dip : float
+        Dip angle of the plane.
+
+    Returns
+    -------
+    list
+        Coordinates of great circle points [x_stereo, y_stereo].
+    """
 
     dip = np.array(dip) * np.pi / 180
     azim = -np.array(azim) * np.pi / 180 + np.pi / 2
@@ -167,25 +217,35 @@ def greatCircle(azim, dip):
     x1 = rproj * np.array([math.sin(ps) for ps in psi])
     y1 = rproj * np.array([math.cos(ps) for ps in psi])
 
-    x_stereo = np.array([x1[k] * math.cos(azim) + y1[k] * math.sin(azim) for k in range(np.size(x1))])
-    y_stereo = np.array([x1[k] * math.sin(azim) - y1[k] * math.cos(azim) for k in range(np.size(x1))])
+    x_stereo = np.array(
+        [x1[k] * math.cos(azim) + y1[k] * math.sin(azim) for k in range(np.size(x1))]
+    )
+    y_stereo = np.array(
+        [x1[k] * math.sin(azim) - y1[k] * math.cos(azim) for k in range(np.size(x1))]
+    )
 
     return [x_stereo, y_stereo]
 
 
 def neighborPoints(j, rows, columns, connectivity):
-    """ NEIGHBOUR INDEXES
-    define array containing all neighbour indexes of a certain point in a
-    matrix
-     ----------
-    INPUT
-    rows, columns  -> size/shape of matrix in X and Y
-    j              -> index in matrix of point analysed (flattend matrix)
-    connectivty    -> type of neighbour-connectivity 
-                    (8-connectivty or 4-connectivty)
-     ----------
-    OUTPUT
-    neigh             -> array with indexes of neighbors """
+    """Define array containing all neighbor indexes of a certain point in a matrix.
+
+    Parameters
+    ----------
+    j : int
+        Index in the matrix of the point being analyzed (flattened matrix).
+    rows : int
+        Number of rows in the matrix.
+    columns : int
+        Number of columns in the matrix.
+    connectivity : str
+        Type of neighbor connectivity (8-connectivity or 4-connectivity).
+
+    Returns
+    -------
+    numpy.ndarray
+        Array with indexes of neighbors.
+    """
 
     lowerleft = (columns * rows) - columns
     lowerright = columns * rows - 1
@@ -211,19 +271,35 @@ def neighborPoints(j, rows, columns, connectivity):
             neigh = np.array([j - 1, j - columns])
 
     if connectivity == 8:
-        neigh = np.array([j + 1, j - 1, j - columns, j + columns,
-                          j - columns + 1, j - columns - 1, j + columns + 1, j + columns - 1])
+        neigh = np.array(
+            [
+                j + 1,
+                j - 1,
+                j - columns,
+                j + columns,
+                j - columns + 1,
+                j - columns - 1,
+                j + columns + 1,
+                j + columns - 1,
+            ]
+        )
 
         if np.remainder(j + 1, columns) == 0:
-            neigh = np.array([j - 1, j - columns, j + columns,
-                              j - columns - 1, j + columns - 1])
+            neigh = np.array(
+                [j - 1, j - columns, j + columns, j - columns - 1, j + columns - 1]
+            )
         if np.remainder(j, columns) == 0:
-            neigh = np.array([j + 1, j - columns, j + columns,
-                              j - columns + 1, j + columns + 1])
+            neigh = np.array(
+                [j + 1, j - columns, j + columns, j - columns + 1, j + columns + 1]
+            )
         if j < columns:
-            neigh = np.array([j - 1, j + 1, j + columns, j + columns + 1, j + columns - 1])
+            neigh = np.array(
+                [j - 1, j + 1, j + columns, j + columns + 1, j + columns - 1]
+            )
         if j > lowerleft:
-            neigh = np.array([j - 1, j + 1, j - columns, j - columns + 1, j - columns - 1])
+            neigh = np.array(
+                [j - 1, j + 1, j - columns, j - columns + 1, j - columns - 1]
+            )
         if j == 0:
             neigh = np.array([j + 1, j + columns, j + columns + 1])
         if j == columns - 1:
@@ -237,26 +313,46 @@ def neighborPoints(j, rows, columns, connectivity):
 
 
 def neighborPointsD(j, rows, columns, dp):
-    """ NEIGHBOUR INDEXES at defined DISTANCE
-    defines array containing the indexes surrounding the index j at a given
-    distance dp in a matrix [rows,columns] (8-connectivty)
-     ----------
-    INPUT
-    rows, columns  -> size/shape of matrix in X and Y
-    j              -> index in matrix of point analysed (flattend matrix)
-    dp             -> pixel number at wanted distance (1 being the closest
-                      neighbour possible)
-     ----------
-    OUTPUT
-    neigh             -> array with indexes of neighbors """
+    """Define array containing the indexes surrounding the index j at a given
+       distance dp in a matrix [rows,columns] (8-connectivity).
+
+    Parameters
+    ----------
+    rows : int
+        Number of rows in the matrix.
+    columns : int
+        Number of columns in the matrix.
+    j : int
+        Index in matrix of the point being analyzed (flattened matrix).
+    dp : int
+        Pixel number at the wanted distance (1 being the closest neighbor possible).
+
+    Returns
+    -------
+    numpy.ndarray
+        Array with indexes of neighbors.
+    """
 
     neigh = np.array([j + dp, j - dp, j - dp * columns, j + dp * columns])
     for i in range(1, dp + 1):
-        neigh2 = np.array([j - dp * columns + i, j - dp * columns - i, j + dp * columns + i, j + dp * columns - i])
+        neigh2 = np.array(
+            [
+                j - dp * columns + i,
+                j - dp * columns - i,
+                j + dp * columns + i,
+                j + dp * columns - i,
+            ]
+        )
         neigh = np.concatenate((neigh, neigh2))
     for i in range(1, dp + 1):
-        neigh2 = np.array([j - (dp - i) * columns + dp, j - (dp - i) * columns - dp, j + (dp - i) * columns + dp,
-                           j + (dp - i) * columns - dp])
+        neigh2 = np.array(
+            [
+                j - (dp - i) * columns + dp,
+                j - (dp - i) * columns - dp,
+                j + (dp - i) * columns + dp,
+                j + (dp - i) * columns - dp,
+            ]
+        )
         neigh = np.concatenate((neigh, neigh2))
 
     remj = np.remainder(j, columns)
@@ -272,17 +368,19 @@ def neighborPointsD(j, rows, columns, dp):
 
 
 def nmbNeighbors(binaryimage):
-    """ Matrix with NUMBER OF NEIGHBORS
-    extracts a matrix (of size of the binaryimage) that contains 
-    the number of positive neighbors for each pixel of the binary image. This
-    is useful in order to find for instance branching points as they always
-    contain more that just two neighbours.
-     ----------
-    INPUT
-    binaryimage  -> matrix of zeros and ones (or TRUE's and FALSE's)
-     ----------
-    OUTPUT
-    nmbN_mat -> matrix with number of positive neighbors """
+    """Extract a matrix (of size of the binary image) that contains the
+       number of positive neighbors for each pixel of the binary image.
+
+    Parameters
+    ----------
+    binaryimage : numpy.ndarray
+        Matrix of zeros and ones (or TRUE's and FALSE's).
+
+    Returns
+    -------
+    numpy.ndarray
+        Matrix with the number of positive neighbors.
+    """
 
     bi = binaryimage.flatten()
     i_true = (bi == 1).nonzero()[0]
@@ -297,16 +395,19 @@ def nmbNeighbors(binaryimage):
 
 
 def normal2angle(normal):
-    """ NORMAL to ANGLE (PLANE ORIENTATION)
-    calculates the orientation (in dip azimuth and dip) of the plane
-    according to its normal (in x,y,z)
+    """Calculates the orientation (in dip azimuth and dip) of the plane
+    according to its normal (in x, y, z).
+
+    Parameters
     ----------
-    INPUT
-    normal        -> normal vector: n = [x,y,z]
-    ----------
-    OUTPUT
-    azim, dip     -> azimuth (dip azimuth) and dip of plane 
-                     expressed in angles. """
+    normal : numpy.ndarray
+        Normal vector: n = [x, y, z].
+
+    Returns
+    -------
+    Tuple[float, float]
+        Azimuth (dip azimuth) and dip of the plane expressed in angles.
+    """
 
     if np.ndim(normal) > 1:
         normal = normal[0]
@@ -334,17 +435,23 @@ def normal2angle(normal):
 
 
 def plungeRot(azim, dip, trend):
-    """ PLUNGE ACCORDING TO GIVEN PLANE AND AXIS TREND
-    calculates the plunge of an axis with a given trend and through which a 
+    """Calculates the plunge of an axis with a given trend and through which a
     plane with a given orientation goes through.
-     ----------
-    INPUT
-    azim, dip   -> angles of plane orientation (angles degree °).  
-    trend       -> angles of trend (plunge azimuth) (angles degree °)
-     ----------
-    OUTPUT
-    plunge      -> angles of axis plunge (angles degree °) 
-                that hosts given plane """
+
+    Parameters
+    ----------
+    azim : float
+        Angles of plane orientation (angles degree °).
+    dip : float
+        Angles of plane dip (angles degree °).
+    trend : float
+        Angles of trend (plunge azimuth) (angles degree °).
+
+    Returns
+    -------
+    float
+        Angles of axis plunge (angles degree °) that hosts the given plane.
+    """
 
     trend = trend / 180 * np.pi
     azim = azim / 180 * np.pi
@@ -355,16 +462,21 @@ def plungeRot(azim, dip, trend):
 
 
 def sortLine(ind, matSize):
-    """ SORT A LINE
-    sorts a vector of points so as to connect them into a line and attribute
+    """Sorts a vector of points to connect them into a line and attribute
     an order (2D only).
-     ----------
-    INPUT
-    ind     -> indexes of points in a matrix
-    matSize -> size/shape of matrix
-     ----------
-    OUTPUT
-    newi -> newly sorted/ordered indexes """
+
+    Parameters
+    ----------
+    ind : array_like
+        Indexes of points in a matrix.
+    matSize : tuple
+        Size/shape of matrix.
+
+    Returns
+    -------
+    newi : ndarray
+        Newly sorted/ordered indexes.
+    """
 
     matx = np.arange(0, matSize[1])
     maty = np.arange(0, matSize[0])
@@ -419,14 +531,20 @@ def sortLine(ind, matSize):
 
 
 def stereoLine(trend, plunge):
-    """ LINE ON STEREONET
-    extracts coordinates of a projected line
+    """Extracts coordinates of a projected line on a stereonet.
+
+    Parameters
     ----------
-    INPUT
-    trend, plunge -> angles of trend (plunge azimuth) and plunge of line  
-    ----------
-    OUTPUT
-    [x_stereo, y_stereo]  -> coordinates of point(s) in a stereonet """
+    trend : float
+        Angle of trend (plunge azimuth) of the line.
+    plunge : float
+        Plunge of the line.
+
+    Returns
+    -------
+    [x_stereo, y_stereo] : list
+        Coordinates of point(s) in a stereonet.
+    """
 
     trend = np.array(trend / 180 * np.pi)
     plunge = np.array(plunge / 180 * np.pi)
@@ -435,11 +553,15 @@ def stereoLine(trend, plunge):
     x_stereo = np.sin(trend) * radius
     y_stereo = np.cos(trend) * radius
 
-    if trend.compress((trend > np.pi / 2).flat) and trend.compress((trend <= np.pi).flat):
+    if trend.compress((trend > np.pi / 2).flat) and trend.compress(
+        (trend <= np.pi).flat
+    ):
         trend = np.pi - trend
         x_stereo = np.sin(trend) * radius
         y_stereo = -np.cos(trend) * radius
-    if trend.compress((trend > np.pi).flat) and trend.compress((trend <= np.pi / 2 * 3).flat):
+    if trend.compress((trend > np.pi).flat) and trend.compress(
+        (trend <= np.pi / 2 * 3).flat
+    ):
         trend = trend - np.pi
         x_stereo = -np.sin(trend) * radius
         y_stereo = -np.cos(trend) * radius
@@ -452,14 +574,18 @@ def stereoLine(trend, plunge):
 
 
 def vect2angle(v):
-    """ VECTOR (AXIS) to ANGLE (AXIS ORIENTATION)
-    extracts from vectors (vx,vy,vz) its axis directions in angles (geology style) 
+    """Extracts from vectors (vx, vy, vz) its axis directions in angles (geology style).
+
+    Parameters
     ----------
-    INPUT
-    v   -> vector: v = [vx,vy,vz]
-    ----------
-    OUTPUT
-    trend, plunge -> angles of trend (plunge azimuth) and plunge of vector. """
+    v : list
+        Vector: v = [vx, vy, vz].
+
+    Returns
+    -------
+    trend, plunge : tuple
+        Angles of trend (plunge azimuth) and plunge of the vector.
+    """
 
     if np.ndim(v) > 1:
         v = v[0]
@@ -489,15 +615,30 @@ def vect2angle(v):
 
 
 def Mbox(title, text, style):
-    """ MESSAGE BOX
-    creates message box 
+    """Creates a message box.
+
+    Parameters
     ----------
-    INPUT
-    title   -> title/name of the box
-    text    -> message text
-    style   -> style of text (bold,fontsize,...)
-    ----------
-    OUTPUT
-    message box appears """
-    import ctypes
-    return ctypes.windll.user32.MessageBoxW(0, text, title, style)
+    title : str
+        Title/name of the box.
+    text : str
+        Message text.
+    style : int
+        Style of text (bold, fontsize, ...).
+
+    Returns
+    -------
+    None
+        Message box appears.
+    """
+    if platform.system() == "Windows":
+        import ctypes
+
+        ctypes.windll.user32.MessageBoxW(0, text, title, style)
+    else:  # Assuming other platforms support tkinter
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+
+        messagebox.showinfo(title, text)
+
+        root.destroy()
