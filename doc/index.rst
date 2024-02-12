@@ -11,19 +11,17 @@ Python module for "Trace Information Extraction" (TIE) method
 
 In geology, TIE is the process of extracting information related to geological traces or features from data, such as geological maps, satellite imagery, or other sources. TIE involves identifying, isolating, and examining specific trace information to better understand geological formations, processes, or phenomena.
 
-This Python code was ported from MatLab (https://github.com/geoloar/TIE-toolbox), which is part of Anna Rauch's Ph.D Thesis [RAUCH2020]_. Excerpt of the abstract:
+This Python code was ported from MatLab (https://github.com/geoloar/TIE-toolbox), which is part of Anna Rauch's Ph.D Thesis [RAUCH2020]_. 
 
 
-
-    Information in geological maps is not straightforward but often inferred based on concepts, definitions and intentions, making the assessment of its reliability challenging. In this thesis, we dedicate ourselves to the concept of uncertainty and ambiguity in geological maps, in order to develop concrete ways to deal with them. The pursuit of a "pre-modelling" strategy – uncertainty evaluation before starting to model the geological structure – resulted in the development of two methodologies. First, we propose a procedure to assess the general uncertainty of bedrock information in maps without going into the specificity of structural features. Secondly, we focus on the ambiguity in structural geological features, namely in the trace network. We propose a methodology – “Trace Information Extraction” (TIE) – that classifies traces so that their geometrical characteristics are more explicit and their ambiguity better confined. Both approaches run parallel with the goal of better managing the uncertain character of a geological map.
-
-
-.. image:: tie-map-with-analysis.png
+.. image:: tie-analysis-3D.png
   :width: 400
   :alt: Geological map with TIE anaylsis result
 
 
-
+.. image:: tie-analysis-reports.png
+  :width: 400
+  :alt: TIE anaylsis reports
 
 .. toctree::
    Home <self>
