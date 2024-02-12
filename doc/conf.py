@@ -6,14 +6,14 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src/python/'))
+sys.path.insert(0, os.path.abspath('../src/'))
 
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'TIE'
-copyright = '2023, Anna Rauch'
+copyright = '2018-2024, Anna Rauch'
 author = 'Anna Rauch'
 
 # -- General configuration ---------------------------------------------------
@@ -70,11 +70,4 @@ autodoc_typehints_description_target = "documented"
 html_theme = 'sphinx_rtd_theme'  #'alabaster'  # sphinx-rtd-theme
 #html_theme_path = [renku_sphinx_theme.get_path()]
 html_static_path = ['_static']
-
-
-html_theme_options = {
-    "github_repo": "https://github.com/geoadmin",
-    "description": "black"
-}
-
 
