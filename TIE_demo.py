@@ -14,9 +14,9 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from TIE import TIE_core as TIEcr
-from TIE import TIE_load as TIEld
-from TIE import TIE_visual as TIEvis
+from untie import TIE_core as TIEcr
+from untie import TIE_load as TIEld
+from untie import TIE_visual as TIEvis
 
 
 def path_to_str(obj):

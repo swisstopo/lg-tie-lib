@@ -1,0 +1,48 @@
+{% set data = load_setup_py_data(setup_file='../setup.py', from_recipe_dir=True) %}
+{% set name = data.get('name') %}
+{% set version = data.get('version') %}
+{% set summary = data.get('description') %}
+{% set description = data.get('long_description') %}
+{% set python_requires = data.get('python_requires') %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  number: 0
+  script: python -m pip install . --no-deps -vv 
+
+requirements:
+  build:
+    - python {{ python_requires }}
+
+  run:
+    - python {{ python_requires }}
+    - geocube
+    - geopandas
+    - matplotlib
+    - mayavi
+    - numpy
+    - rasterio
+    - scipy
+    - shapely>=2.0.0
+    - scikit-image
+
+
+
+
+
+about:
+  home: https://github.com/swisstopo/lg-tie-lib
+  license: BSD-3
+  summary: {{ summary }}
+  description: |
+    {{ summary }}
+  dev_url: https://github.com/swisstopo/lg-tie-lib
+  doc_url: https://swisstopo.github.io/lg-tie-lib/
+  doc_source_url: https://github.com/swisstopo/lg-tie-lib/tree/master/doc
