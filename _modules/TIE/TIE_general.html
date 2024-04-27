@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIE.TIE_general &mdash; TIE  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TIE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TIE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">TIE.TIE_general</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for TIE.TIE_general</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Mon Feb 15 16:07:59 2021</span>
+<span class="sd">@author: Anna Rauch</span>
+
+<span class="sd">This script contains a set of general functions/methods usually related to</span>
+<span class="sd">linear algebra and connectivty issues. These functions are independent from</span>
+<span class="sd">the TIE-method, yet are used by it.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">messagebox</span>
+
+
+<div class="viewcode-block" id="angle2normal">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.angle2normal">[docs]</a>
+<span class="k">def</span> <span class="nf">angle2normal</span><span class="p">(</span><span class="n">azim</span><span class="p">,</span> <span class="n">dip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the normal vector of a plane (or set of planes) defined with orientational angles in degrees.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    azim : float or array_like</span>
+<span class="sd">        Angles of azimuth (dip azimuth) in degrees.</span>
+<span class="sd">    dip : float or array_like</span>
+<span class="sd">        Dip angles of the plane(s) in degrees.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Normal vector of the plane(s) in the form [normalx, normaly, normalz].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+    <span class="n">azim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">azim</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">dip</span> <span class="o">=</span> <span class="p">[</span><span class="n">dip</span><span class="p">]</span>
+        <span class="n">azim</span> <span class="o">=</span> <span class="p">[</span><span class="n">azim</span><span class="p">]</span>
+
+    <span class="n">normalz</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="k">for</span> <span class="n">dp</span> <span class="ow">in</span> <span class="n">dip</span><span class="p">]</span>
+    <span class="n">normalx</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">azim</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">dip</span><span class="p">))]</span>
+    <span class="n">normaly</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">azim</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">dip</span><span class="p">))]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">normalx</span><span class="p">,</span> <span class="n">normaly</span><span class="p">,</span> <span class="n">normalz</span><span class="p">])</span><span class="o">.</span><span class="n">T</span></div>
+
+
+
+<div class="viewcode-block" id="angle2vect">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.angle2vect">[docs]</a>
+<span class="k">def</span> <span class="nf">angle2vect</span><span class="p">(</span><span class="n">trend</span><span class="p">,</span> <span class="n">plunge</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the directional vector (length = 1) from a line defined by angles - trend and plunge.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trend : float or array_like</span>
+<span class="sd">        Angles of trend (plunge azimuth) in degrees.</span>
+<span class="sd">    plunge : float or array_like</span>
+<span class="sd">        Plunge angles of the directional vector in degrees.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple of numpy.ndarray</span>
+<span class="sd">        Coordinates of the oriented vector in the form (vx, vy, vz).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Convert angles to radians</span>
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">plunge</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+
+    <span class="c1"># Handle single values or arrays</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="p">[</span><span class="n">trend</span><span class="p">]</span>
+        <span class="n">plunge</span> <span class="o">=</span> <span class="p">[</span><span class="n">plunge</span><span class="p">]</span>
+
+    <span class="c1"># Calculate coordinates of the oriented vector</span>
+    <span class="n">vz</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pl</span><span class="p">)</span> <span class="k">for</span> <span class="n">pl</span> <span class="ow">in</span> <span class="n">plunge</span><span class="p">]</span>
+    <span class="n">vx</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">trend</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plunge</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">trend</span><span class="p">))]</span>
+    <span class="n">vy</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">trend</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plunge</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">trend</span><span class="p">))]</span>
+
+    <span class="c1"># Return the coordinates as a tuple of numpy arrays</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vx</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vy</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vz</span><span class="p">)</span><span class="o">.</span><span class="n">T</span></div>
+
+
+
+<div class="viewcode-block" id="angleBtwVec">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.angleBtwVec">[docs]</a>
+<span class="k">def</span> <span class="nf">angleBtwVec</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the small angle between two directional oriented vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v1 : array_like</span>
+<span class="sd">        First vector in the form (x, y, z).</span>
+<span class="sd">    v2 : array_like</span>
+<span class="sd">        Second vector in the form (x, y, z).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Angle between the two vectors in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">v1n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">v1</span><span class="p">])</span>
+        <span class="n">v2n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">k</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">v2</span><span class="p">])</span>
+        <span class="n">dotv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1n</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="n">v2n</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">v1</span><span class="p">)))],</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">dotv</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v1n</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+        <span class="n">v2n</span> <span class="o">=</span> <span class="n">v2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1n</span><span class="p">,</span> <span class="n">v2n</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">angle</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span></div>
+
+
+
+<div class="viewcode-block" id="azimRot">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.azimRot">[docs]</a>
+<span class="k">def</span> <span class="nf">azimRot</span><span class="p">(</span><span class="n">dip</span><span class="p">,</span> <span class="n">trend</span><span class="p">,</span> <span class="n">plunge</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Azimuth according to rotation axis and dip.</span>
+
+<span class="sd">    Calculates the azimuth of a plane with a certain dip</span>
+<span class="sd">    that goes through a rotation axis defined with trend and plunge angles.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dip : float</span>
+<span class="sd">        Angles of plane dip (angles in degrees).</span>
+<span class="sd">    trend : float</span>
+<span class="sd">        Angles of trend (plunge azimuth) of the rotational axis.</span>
+<span class="sd">    plunge : float</span>
+<span class="sd">        Plunge of the rotational axis (angles in degrees).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Angles of plane dip azimuths (angles in degrees) that pass through the axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">dip</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">plunge</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">azim</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">plunge</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">dip</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">azim</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span></div>
+
+
+
+<div class="viewcode-block" id="dipRot">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.dipRot">[docs]</a>
+<span class="k">def</span> <span class="nf">dipRot</span><span class="p">(</span><span class="n">azim</span><span class="p">,</span> <span class="n">trend</span><span class="p">,</span> <span class="n">plunge</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dip According To Rotation Axis And Azimuth.</span>
+
+<span class="sd">    Calculates the dip of a plane with a certain dip azimuth</span>
+<span class="sd">    that passes through a rotation axis defined with trend and plunge angles.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    azim : float</span>
+<span class="sd">        Angles of plane dip azimuth (angles in degrees) (no strike).</span>
+<span class="sd">    trend : float</span>
+<span class="sd">        Angles of trend (plunge azimuth) of the rotational axis.</span>
+<span class="sd">    plunge : float</span>
+<span class="sd">        Plunge of the rotational axis (angles in degrees).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Angles of plane dips (angles in degrees) that pass through the axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">azim</span> <span class="o">=</span> <span class="n">azim</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">plunge</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">plunge</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">azim</span> <span class="o">-</span> <span class="n">trend</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">dip</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span></div>
+
+
+
+<div class="viewcode-block" id="distance">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.distance">[docs]</a>
+<span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the shortest distance between two points in space.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    P1 : list</span>
+<span class="sd">        Coordinates of the first point [x, y, z].</span>
+<span class="sd">    P2 : list</span>
+<span class="sd">        Coordinates of the second point [x, y, z].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Distance between two points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">((</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">P2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">P2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span></div>
+
+
+
+<div class="viewcode-block" id="greatCircle">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.greatCircle">[docs]</a>
+<span class="k">def</span> <span class="nf">greatCircle</span><span class="p">(</span><span class="n">azim</span><span class="p">,</span> <span class="n">dip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract coordinates of the great circle of a given plane orientation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    azim : float</span>
+<span class="sd">        Angle of azimuth (dip azimuth) of the plane.</span>
+<span class="sd">    dip : float</span>
+<span class="sd">        Dip angle of the plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Coordinates of great circle points [x_stereo, y_stereo].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+    <span class="n">azim</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">azim</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="mi">51</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+    <span class="n">radint</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span> <span class="k">for</span> <span class="n">ps</span> <span class="ow">in</span> <span class="n">psi</span><span class="p">])</span>
+    <span class="n">radip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">radi</span><span class="p">)</span> <span class="k">for</span> <span class="n">radi</span> <span class="ow">in</span> <span class="n">radint</span><span class="p">])</span>
+    <span class="n">rproj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">radp</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">radp</span> <span class="ow">in</span> <span class="n">radip</span><span class="p">])</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">rproj</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span> <span class="k">for</span> <span class="n">ps</span> <span class="ow">in</span> <span class="n">psi</span><span class="p">])</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="n">rproj</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span> <span class="k">for</span> <span class="n">ps</span> <span class="ow">in</span> <span class="n">psi</span><span class="p">])</span>
+
+    <span class="n">x_stereo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">x1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">azim</span><span class="p">)</span> <span class="o">+</span> <span class="n">y1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">azim</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">x1</span><span class="p">))]</span>
+    <span class="p">)</span>
+    <span class="n">y_stereo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">x1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">azim</span><span class="p">)</span> <span class="o">-</span> <span class="n">y1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">azim</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">x1</span><span class="p">))]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_stereo</span><span class="p">,</span> <span class="n">y_stereo</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="neighborPoints">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.neighborPoints">[docs]</a>
+<span class="k">def</span> <span class="nf">neighborPoints</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">connectivity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define array containing all neighbor indexes of a certain point in a matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    j : int</span>
+<span class="sd">        Index in the matrix of the point being analyzed (flattened matrix).</span>
+<span class="sd">    rows : int</span>
+<span class="sd">        Number of rows in the matrix.</span>
+<span class="sd">    columns : int</span>
+<span class="sd">        Number of columns in the matrix.</span>
+<span class="sd">    connectivity : str</span>
+<span class="sd">        Type of neighbor connectivity (8-connectivity or 4-connectivity).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Array with indexes of neighbors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">lowerleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">columns</span> <span class="o">*</span> <span class="n">rows</span><span class="p">)</span> <span class="o">-</span> <span class="n">columns</span>
+    <span class="n">lowerright</span> <span class="o">=</span> <span class="n">columns</span> <span class="o">*</span> <span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">connectivity</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">lowerleft</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">lowerleft</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">lowerright</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">connectivity</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">lowerleft</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">lowerleft</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">lowerright</span><span class="p">:</span>
+            <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">neigh</span></div>
+
+
+
+<div class="viewcode-block" id="neighborPointsD">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.neighborPointsD">[docs]</a>
+<span class="k">def</span> <span class="nf">neighborPointsD</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">dp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define array containing the indexes surrounding the index j at a given</span>
+<span class="sd">       distance dp in a matrix [rows,columns] (8-connectivity).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rows : int</span>
+<span class="sd">        Number of rows in the matrix.</span>
+<span class="sd">    columns : int</span>
+<span class="sd">        Number of columns in the matrix.</span>
+<span class="sd">    j : int</span>
+<span class="sd">        Index in matrix of the point being analyzed (flattened matrix).</span>
+<span class="sd">    dp : int</span>
+<span class="sd">        Pixel number at the wanted distance (1 being the closest neighbor possible).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Array with indexes of neighbors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">j</span> <span class="o">+</span> <span class="n">dp</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">dp</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">dp</span> <span class="o">*</span> <span class="n">columns</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">dp</span> <span class="o">*</span> <span class="n">columns</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">neigh2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="n">dp</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="n">dp</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">-</span> <span class="n">i</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="n">dp</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="n">dp</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">-</span> <span class="n">i</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">neigh</span><span class="p">,</span> <span class="n">neigh2</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">neigh2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="p">(</span><span class="n">dp</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">+</span> <span class="n">dp</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="p">(</span><span class="n">dp</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">-</span> <span class="n">dp</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="n">dp</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">+</span> <span class="n">dp</span><span class="p">,</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="n">dp</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">columns</span> <span class="o">-</span> <span class="n">dp</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">neigh</span><span class="p">,</span> <span class="n">neigh2</span><span class="p">))</span>
+
+    <span class="n">remj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
+    <span class="n">remn</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">neigh</span><span class="p">]</span>
+    <span class="n">neigh</span> <span class="o">=</span> <span class="n">neigh</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">remn</span> <span class="o">&lt;=</span> <span class="n">remj</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+    <span class="n">remn</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">neigh</span><span class="p">]</span>
+    <span class="n">neigh</span> <span class="o">=</span> <span class="n">neigh</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">remn</span> <span class="o">&gt;=</span> <span class="n">remj</span> <span class="o">-</span> <span class="n">dp</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+    <span class="n">neigh</span> <span class="o">=</span> <span class="n">neigh</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">neigh</span> <span class="o">&lt;</span> <span class="n">rows</span> <span class="o">*</span> <span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+    <span class="n">neigh</span> <span class="o">=</span> <span class="n">neigh</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">neigh</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+    <span class="n">neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">neigh</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">neigh</span></div>
+
+
+
+<div class="viewcode-block" id="nmbNeighbors">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.nmbNeighbors">[docs]</a>
+<span class="k">def</span> <span class="nf">nmbNeighbors</span><span class="p">(</span><span class="n">binaryimage</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a matrix (of size of the binary image) that contains the</span>
+<span class="sd">       number of positive neighbors for each pixel of the binary image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    binaryimage : numpy.ndarray</span>
+<span class="sd">        Matrix of zeros and ones (or TRUE&#39;s and FALSE&#39;s).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Matrix with the number of positive neighbors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">bi</span> <span class="o">=</span> <span class="n">binaryimage</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">i_true</span> <span class="o">=</span> <span class="p">(</span><span class="n">bi</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nmbN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">bi</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">i_true</span><span class="p">:</span>
+        <span class="n">neigh</span> <span class="o">=</span> <span class="n">neighborPoints</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">binaryimage</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">binaryimage</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">nmbN</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">((</span><span class="n">bi</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">())</span>
+
+    <span class="n">nmbN_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nmbN</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">binaryimage</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">nmbN_mat</span></div>
+
+
+
+<div class="viewcode-block" id="normal2angle">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.normal2angle">[docs]</a>
+<span class="k">def</span> <span class="nf">normal2angle</span><span class="p">(</span><span class="n">normal</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the orientation (in dip azimuth and dip) of the plane</span>
+<span class="sd">    according to its normal (in x, y, z).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    normal : numpy.ndarray</span>
+<span class="sd">        Normal vector: n = [x, y, z].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[float, float]</span>
+<span class="sd">        Azimuth (dip azimuth) and dip of the plane expressed in angles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">normal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.000001</span>
+
+    <span class="n">zvector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">zvector</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">zvector</span><span class="p">))</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">dip</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span>
+    <span class="n">azim</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">azim</span> <span class="o">=</span> <span class="n">azim</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span>
+
+    <span class="k">if</span> <span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">azim</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">-</span> <span class="n">azim</span>
+
+    <span class="k">if</span> <span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">azim</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">+</span> <span class="n">azim</span>
+
+    <span class="k">if</span> <span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">azim</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">azim</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">azim</span><span class="p">,</span> <span class="n">dip</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="plungeRot">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.plungeRot">[docs]</a>
+<span class="k">def</span> <span class="nf">plungeRot</span><span class="p">(</span><span class="n">azim</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">trend</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the plunge of an axis with a given trend and through which a</span>
+<span class="sd">    plane with a given orientation goes through.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    azim : float</span>
+<span class="sd">        Angles of plane orientation (angles degree °).</span>
+<span class="sd">    dip : float</span>
+<span class="sd">        Angles of plane dip (angles degree °).</span>
+<span class="sd">    trend : float</span>
+<span class="sd">        Angles of trend (plunge azimuth) (angles degree °).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Angles of axis plunge (angles degree °) that hosts the given plane.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">azim</span> <span class="o">=</span> <span class="n">azim</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">dip</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">azim</span> <span class="o">-</span> <span class="n">trend</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">plunge</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span></div>
+
+
+
+<div class="viewcode-block" id="sortLine">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.sortLine">[docs]</a>
+<span class="k">def</span> <span class="nf">sortLine</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">matSize</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sorts a vector of points to connect them into a line and attribute</span>
+<span class="sd">    an order (2D only).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ind : array_like</span>
+<span class="sd">        Indexes of points in a matrix.</span>
+<span class="sd">    matSize : tuple</span>
+<span class="sd">        Size/shape of matrix.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    newi : ndarray</span>
+<span class="sd">        Newly sorted/ordered indexes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">matx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">maty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">matx</span><span class="p">,</span> <span class="n">maty</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">mat</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="p">(</span><span class="n">matSize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="n">newi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">ind</span><span class="p">))</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">:</span>
+        <span class="n">neigh</span> <span class="o">=</span> <span class="n">neighborPoints</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">npos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">npos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">ind</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">neigh</span> <span class="o">=</span> <span class="n">neighborPoints</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">npos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+        <span class="n">newi</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">npos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span> <span class="o">!=</span> <span class="n">npos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">newi</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span> <span class="o">!=</span> <span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">start</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">start</span><span class="p">]],</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">ii</span><span class="p">]])</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+        <span class="n">dimin</span> <span class="o">=</span> <span class="p">[</span><span class="n">di</span> <span class="k">for</span> <span class="n">di</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="n">di</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">d</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">di</span> <span class="ow">in</span> <span class="n">dimin</span><span class="p">:</span>
+                <span class="n">neigh</span> <span class="o">=</span> <span class="n">neighborPointsD</span><span class="p">(</span><span class="n">ind</span><span class="p">[</span><span class="n">di</span><span class="p">],</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">matSize</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+                <span class="n">npos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+                <span class="n">di_neigh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dimin</span><span class="p">)</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dimin</span><span class="p">)</span> <span class="o">!=</span> <span class="n">di</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+                <span class="n">npos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="n">ind</span><span class="p">[</span><span class="n">di_neigh</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">npos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">dimin</span> <span class="o">=</span> <span class="n">di</span>
+                    <span class="k">break</span>
+
+        <span class="n">newi</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span><span class="p">[</span><span class="n">dimin</span><span class="p">]</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">ind</span><span class="p">[</span><span class="n">dimin</span><span class="p">]</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">dimin</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">newi</span></div>
+
+
+
+<div class="viewcode-block" id="stereoLine">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.stereoLine">[docs]</a>
+<span class="k">def</span> <span class="nf">stereoLine</span><span class="p">(</span><span class="n">trend</span><span class="p">,</span> <span class="n">plunge</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts coordinates of a projected line on a stereonet.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trend : float</span>
+<span class="sd">        Angle of trend (plunge azimuth) of the line.</span>
+<span class="sd">    plunge : float</span>
+<span class="sd">        Plunge of the line.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [x_stereo, y_stereo] : list</span>
+<span class="sd">        Coordinates of point(s) in a stereonet.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trend</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">plunge</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+    <span class="n">radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">plunge</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+    <span class="n">x_stereo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+    <span class="n">y_stereo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+
+    <span class="k">if</span> <span class="n">trend</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">trend</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span> <span class="ow">and</span> <span class="n">trend</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">trend</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span>
+    <span class="p">):</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">trend</span>
+        <span class="n">x_stereo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+        <span class="n">y_stereo</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+    <span class="k">if</span> <span class="n">trend</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">trend</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span> <span class="ow">and</span> <span class="n">trend</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">trend</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span>
+    <span class="p">):</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="n">x_stereo</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+        <span class="n">y_stereo</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+    <span class="k">if</span> <span class="n">trend</span><span class="o">.</span><span class="n">compress</span><span class="p">((</span><span class="n">trend</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">trend</span>
+        <span class="n">x_stereo</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+        <span class="n">y_stereo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">trend</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_stereo</span><span class="p">,</span> <span class="n">y_stereo</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="vect2angle">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.vect2angle">[docs]</a>
+<span class="k">def</span> <span class="nf">vect2angle</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts from vectors (vx, vy, vz) its axis directions in angles (geology style).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : list</span>
+<span class="sd">        Vector: v = [vx, vy, vz].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    trend, plunge : tuple</span>
+<span class="sd">        Angles of trend (plunge azimuth) and plunge of the vector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="mi">90</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span>
+
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">plunge</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span>
+
+    <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">-</span> <span class="n">trend</span>
+
+    <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">+</span> <span class="n">trend</span>
+
+    <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">trend</span>
+
+    <span class="k">return</span> <span class="n">trend</span><span class="p">,</span> <span class="n">plunge</span></div>
+
+
+
+<div class="viewcode-block" id="Mbox">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_general.Mbox">[docs]</a>
+<span class="k">def</span> <span class="nf">Mbox</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a message box.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title/name of the box.</span>
+<span class="sd">    text : str</span>
+<span class="sd">        Message text.</span>
+<span class="sd">    style : int</span>
+<span class="sd">        Style of text (bold, fontsize, ...).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Message box appears.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">ctypes</span>
+
+        <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">user32</span><span class="o">.</span><span class="n">MessageBoxW</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Assuming other platforms support tkinter</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>  <span class="c1"># Hide the main window</span>
+
+        <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+        <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2024, Anna Rauch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

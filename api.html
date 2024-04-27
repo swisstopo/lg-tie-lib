@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API &mdash; TIE  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            TIE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-TIE.TIE_load">TIE_load</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.adaptSHAPE2DEM"><code class="docutils literal notranslate"><span class="pre">adaptSHAPE2DEM()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.createExtentPLG"><code class="docutils literal notranslate"><span class="pre">createExtentPLG()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.cropDEMextent"><code class="docutils literal notranslate"><span class="pre">cropDEMextent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.extractTraces"><code class="docutils literal notranslate"><span class="pre">extractTraces()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.findNeighType"><code class="docutils literal notranslate"><span class="pre">findNeighType()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.identifyTRACE"><code class="docutils literal notranslate"><span class="pre">identifyTRACE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.loadGeocover"><code class="docutils literal notranslate"><span class="pre">loadGeocover()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.loadLKdem"><code class="docutils literal notranslate"><span class="pre">loadLKdem()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_load.rasterizeSHP"><code class="docutils literal notranslate"><span class="pre">rasterizeSHP()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-TIE.TIE_general">TIE_general</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.Mbox"><code class="docutils literal notranslate"><span class="pre">Mbox()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.angle2normal"><code class="docutils literal notranslate"><span class="pre">angle2normal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.angle2vect"><code class="docutils literal notranslate"><span class="pre">angle2vect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.angleBtwVec"><code class="docutils literal notranslate"><span class="pre">angleBtwVec()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.azimRot"><code class="docutils literal notranslate"><span class="pre">azimRot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.dipRot"><code class="docutils literal notranslate"><span class="pre">dipRot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.distance"><code class="docutils literal notranslate"><span class="pre">distance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.greatCircle"><code class="docutils literal notranslate"><span class="pre">greatCircle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.neighborPoints"><code class="docutils literal notranslate"><span class="pre">neighborPoints()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.neighborPointsD"><code class="docutils literal notranslate"><span class="pre">neighborPointsD()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.nmbNeighbors"><code class="docutils literal notranslate"><span class="pre">nmbNeighbors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.normal2angle"><code class="docutils literal notranslate"><span class="pre">normal2angle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.plungeRot"><code class="docutils literal notranslate"><span class="pre">plungeRot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.sortLine"><code class="docutils literal notranslate"><span class="pre">sortLine()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.stereoLine"><code class="docutils literal notranslate"><span class="pre">stereoLine()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_general.vect2angle"><code class="docutils literal notranslate"><span class="pre">vect2angle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-TIE.TIE_visual">TIE_Visual</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.bed2cmap"><code class="docutils literal notranslate"><span class="pre">bed2cmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.colorClassID"><code class="docutils literal notranslate"><span class="pre">colorClassID()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.createCmap"><code class="docutils literal notranslate"><span class="pre">createCmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.showOrientBars"><code class="docutils literal notranslate"><span class="pre">showOrientBars()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.showOverview3D"><code class="docutils literal notranslate"><span class="pre">showOverview3D()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.showOverviewMap"><code class="docutils literal notranslate"><span class="pre">showOverviewMap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.showSigStereo"><code class="docutils literal notranslate"><span class="pre">showSigStereo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.showSignal"><code class="docutils literal notranslate"><span class="pre">showSignal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.showTIEmap"><code class="docutils literal notranslate"><span class="pre">showTIEmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.sigHdiagram"><code class="docutils literal notranslate"><span class="pre">sigHdiagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_visual.stereoPlot"><code class="docutils literal notranslate"><span class="pre">stereoPlot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-TIE.TIE_core">TIE_Core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.changeTHseg"><code class="docutils literal notranslate"><span class="pre">changeTHseg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.classifyTRACE"><code class="docutils literal notranslate"><span class="pre">classifyTRACE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.clearTIE"><code class="docutils literal notranslate"><span class="pre">clearTIE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.extractAlpha"><code class="docutils literal notranslate"><span class="pre">extractAlpha()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.extractBeta"><code class="docutils literal notranslate"><span class="pre">extractBeta()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.extractChdPlanes"><code class="docutils literal notranslate"><span class="pre">extractChdPlanes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.extractChords"><code class="docutils literal notranslate"><span class="pre">extractChords()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.extractOrientBars"><code class="docutils literal notranslate"><span class="pre">extractOrientBars()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.mergeSeg"><code class="docutils literal notranslate"><span class="pre">mergeSeg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.mergeTraces"><code class="docutils literal notranslate"><span class="pre">mergeTraces()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.segSeg"><code class="docutils literal notranslate"><span class="pre">segSeg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.segmentTRACE"><code class="docutils literal notranslate"><span class="pre">segmentTRACE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TIE.TIE_core.tie"><code class="docutils literal notranslate"><span class="pre">tie()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-TIE.TIE_classes">TIE_classes</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TIE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api">
+<h1>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<section id="module-TIE.TIE_load">
+<span id="tie-load"></span><h2>TIE_load<a class="headerlink" href="#module-TIE.TIE_load" title="Link to this heading"></a></h2>
+<p>General functions/methods that allow you
+to load the data and extract the traces in a way needed to perform a
+TIE-analysis.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.adaptSHAPE2DEM">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">adaptSHAPE2DEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shapefile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DEM</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#adaptSHAPE2DEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.adaptSHAPE2DEM" title="Link to this definition"></a></dt>
+<dd><p>Adapt a shapefile’s extent to match the extent given by a DEM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shapefile</strong> (<em>geopandas.GeoDataFrame</em>) – Geopandas shapefile object.</p></li>
+<li><p><strong>DEM</strong> (<em>dict</em>) – Dictionary containing DEM and coordinate data obtained with TIE_load.cropDEMextent.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Clipped shapefile.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>geopandas.GeoDataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>The DEM parameter should be a dictionary with the following keys:</dt><dd><ul class="simple">
+<li><p>‘meta’: Metadata of the DEM.</p></li>
+<li><p>‘z’: DEM data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.createExtentPLG">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">createExtentPLG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs_shp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#createExtentPLG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.createExtentPLG" title="Link to this definition"></a></dt>
+<dd><p>Creates Extent Polygon.</p>
+<p>Creates a georeferenced polygon (geopandas) covering the extent defined
+with x- and y-coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>list</em><em> of </em><em>float</em>) – X-coordinates of the wanted polygon.</p></li>
+<li><p><strong>y</strong> (<em>list</em><em> of </em><em>float</em>) – Y-coordinates of the wanted polygon.</p></li>
+<li><p><strong>crs_shp</strong> (<em>geopandas.crs.CRS</em>) – Coordinate system of the shape (geopandas object).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Geopandas object (shapefile) with the polygon extent.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>geopandas.geodataframe.GeoDataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.cropDEMextent">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">cropDEMextent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geotif</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shapefile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#cropDEMextent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.cropDEMextent" title="Link to this definition"></a></dt>
+<dd><p>Crop DEM with Shapefile.</p>
+<p>Crops the DEM extent according to a PLG shapefile (often an extent shapefile).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geotif</strong> (<em>rasterio.io.DatasetReader</em>) – Handle to an opened geotif (rasterio).</p></li>
+<li><p><strong>shapefile</strong> (<em>gpd.GeoDataFrame</em>) – Handle to an opened shapefile (geopandas object).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing coordinate data.
+- ‘z’: Numpy array representing the cropped DEM.
+- ‘x’: Numpy array representing the x-coordinates.
+- ‘y’: Numpy array representing the y-coordinates.
+- ‘meta’: Metadata for the cropped DEM.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.extractTraces">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">extractTraces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRmatrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#extractTraces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.extractTraces" title="Link to this definition"></a></dt>
+<dd><p>Extract Traces as Trace Objects.</p>
+<p>Extracts individual, sorted traces (as a trace_OBJ) based on a trace matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRmatrix</strong> (<em>numpy.ndarray</em>) – Matrix containing the traces (binary image), in the form of its trace matrix.</p></li>
+<li><p><strong>shape</strong> (<em>str</em>) – ‘L’ for polylines (e.g., faults), ‘PLG’ for traces extracted from polygons
+(e.g., bedrock interface traces).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of trace objects (trace_OBJ) defined in TIE_classes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.findNeighType">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">findNeighType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BEDrst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#findNeighType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.findNeighType" title="Link to this definition"></a></dt>
+<dd><p>Extracts the TWO bedrock types stored in BEDrst, which form a bedrock interface trace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>List</em><em>[</em><em>TIEclass.trace_OBJ</em><em>]</em>) – List of trace_OBJ storing trace information of bedrock interface traces.</p></li>
+<li><p><strong>BEDrst</strong> (<em>numpy.ndarray</em>) – Bedrock matrix (rasterized version of bedrock shapefile).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of trace_OBJ with added SECOND bedrock type defining a boundary type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[TIEclass.trace_OBJ]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.identifyTRACE">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">identifyTRACE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">BEDrst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FAULTS</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#identifyTRACE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.identifyTRACE" title="Link to this definition"></a></dt>
+<dd><p>Identifies traces in a bedrock matrix based on the bedrock distinction and the fault traces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BEDrst</strong> (<em>numpy.ndarray</em>) – Matrix with Bedrock data (see loadBedrock and rasterizeBedrock).</p></li>
+<li><p><strong>FAULTS</strong> (<em>List</em><em>[</em><em>TIEclass.trace_OBJ</em><em>]</em>) – List of trace_OBJ containing FAULT information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Matrix (same size as BEDrst) with trace information.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.loadGeocover">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">loadGeocover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoc_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'de'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#loadGeocover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.loadGeocover" title="Link to this definition"></a></dt>
+<dd><p>Loads Geocover Data (all geology data) according to the Geocover structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet</strong> (<em>int</em>) – Identification number of LK sheet (Landeskarte 1.25’000).</p></li>
+<li><p><strong>geoc_path</strong> (<em>str</em>) – Path to Geocover folder.</p></li>
+<li><p><strong>language</strong> (<em>str</em><em>, </em><em>optional</em>) – Language for the version (“de” for German, “fr” for French), default is “de”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Geopandas handles to shapefiles of Bedrock_PLG.shp, Tectonic_Boundaries_L.shp, and Planar_Structures_PT.shp.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[geopandas.GeoDataFrame, geopandas.GeoDataFrame, geopandas.GeoDataFrame]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.loadLKdem">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">loadLKdem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_alti3D_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#loadLKdem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.loadLKdem" title="Link to this definition"></a></dt>
+<dd><p>Loads DEM (swissALTI3D), gluing the different patches together.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet</strong> (<em>int</em>) – Identification number of LK sheet (Landeskarte 1:25’000).</p></li>
+<li><p><strong>path_alti3D_folder</strong> (<em>str</em>) – Path to swissALTI3D folder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Rasterio handle to DEM of the whole LK sheet (Landeskarte 1:25’000), or None if loading fails.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[rasterio.DatasetReader, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_load.rasterizeSHP">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_load.</span></span><span class="sig-name descname"><span class="pre">rasterizeSHP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DEM</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_load.html#rasterizeSHP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_load.rasterizeSHP" title="Link to this definition"></a></dt>
+<dd><p>Rasterizes Shapefile.</p>
+<p>Rasterizes a shapefile according to a specific attribute field value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shp</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – Opened geopandas handle to a shapefile.</p></li>
+<li><p><strong>attribute</strong> (<em>str</em>) – Attribute in shapefile that will be used to distinguish between different types
+of tectonic boundaries or litho-stratigraphic units. The attribute value must be a number.</p></li>
+<li><p><strong>DEM</strong> (<em>dict</em>) – Dictionary containing coordinates (x, y, and z) of the analyzed zone (see crop2DEMextent).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Raster matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-TIE.TIE_general">
+<span id="tie-general"></span><h2>TIE_general<a class="headerlink" href="#module-TIE.TIE_general" title="Link to this heading"></a></h2>
+<p>Created on Mon Feb 15 16:07:59 2021
+&#64;author: Anna Rauch</p>
+<p>This script contains a set of general functions/methods usually related to
+linear algebra and connectivty issues. These functions are independent from
+the TIE-method, yet are used by it.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.Mbox">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">Mbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#Mbox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.Mbox" title="Link to this definition"></a></dt>
+<dd><p>Creates a message box.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – Title/name of the box.</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – Message text.</p></li>
+<li><p><strong>style</strong> (<em>int</em>) – Style of text (bold, fontsize, …).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Message box appears.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.angle2normal">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">angle2normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#angle2normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.angle2normal" title="Link to this definition"></a></dt>
+<dd><p>Calculate the normal vector of a plane (or set of planes) defined with orientational angles in degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>azim</strong> (<em>float</em><em> or </em><em>array_like</em>) – Angles of azimuth (dip azimuth) in degrees.</p></li>
+<li><p><strong>dip</strong> (<em>float</em><em> or </em><em>array_like</em>) – Dip angles of the plane(s) in degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Normal vector of the plane(s) in the form [normalx, normaly, normalz].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.angle2vect">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">angle2vect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#angle2vect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.angle2vect" title="Link to this definition"></a></dt>
+<dd><p>Calculate the directional vector (length = 1) from a line defined by angles - trend and plunge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trend</strong> (<em>float</em><em> or </em><em>array_like</em>) – Angles of trend (plunge azimuth) in degrees.</p></li>
+<li><p><strong>plunge</strong> (<em>float</em><em> or </em><em>array_like</em>) – Plunge angles of the directional vector in degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Coordinates of the oriented vector in the form (vx, vy, vz).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple of numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.angleBtwVec">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">angleBtwVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#angleBtwVec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.angleBtwVec" title="Link to this definition"></a></dt>
+<dd><p>Calculate the small angle between two directional oriented vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v1</strong> (<em>array_like</em>) – First vector in the form (x, y, z).</p></li>
+<li><p><strong>v2</strong> (<em>array_like</em>) – Second vector in the form (x, y, z).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Angle between the two vectors in degrees.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.azimRot">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">azimRot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#azimRot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.azimRot" title="Link to this definition"></a></dt>
+<dd><p>Azimuth according to rotation axis and dip.</p>
+<p>Calculates the azimuth of a plane with a certain dip
+that goes through a rotation axis defined with trend and plunge angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dip</strong> (<em>float</em>) – Angles of plane dip (angles in degrees).</p></li>
+<li><p><strong>trend</strong> (<em>float</em>) – Angles of trend (plunge azimuth) of the rotational axis.</p></li>
+<li><p><strong>plunge</strong> (<em>float</em>) – Plunge of the rotational axis (angles in degrees).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Angles of plane dip azimuths (angles in degrees) that pass through the axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.dipRot">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">dipRot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#dipRot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.dipRot" title="Link to this definition"></a></dt>
+<dd><p>Dip According To Rotation Axis And Azimuth.</p>
+<p>Calculates the dip of a plane with a certain dip azimuth
+that passes through a rotation axis defined with trend and plunge angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>azim</strong> (<em>float</em>) – Angles of plane dip azimuth (angles in degrees) (no strike).</p></li>
+<li><p><strong>trend</strong> (<em>float</em>) – Angles of trend (plunge azimuth) of the rotational axis.</p></li>
+<li><p><strong>plunge</strong> (<em>float</em>) – Plunge of the rotational axis (angles in degrees).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Angles of plane dips (angles in degrees) that pass through the axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.distance">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.distance" title="Link to this definition"></a></dt>
+<dd><p>Calculate the shortest distance between two points in space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P1</strong> (<em>list</em>) – Coordinates of the first point [x, y, z].</p></li>
+<li><p><strong>P2</strong> (<em>list</em>) – Coordinates of the second point [x, y, z].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance between two points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.greatCircle">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">greatCircle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#greatCircle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.greatCircle" title="Link to this definition"></a></dt>
+<dd><p>Extract coordinates of the great circle of a given plane orientation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>azim</strong> (<em>float</em>) – Angle of azimuth (dip azimuth) of the plane.</p></li>
+<li><p><strong>dip</strong> (<em>float</em>) – Dip angle of the plane.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Coordinates of great circle points [x_stereo, y_stereo].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.neighborPoints">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">neighborPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#neighborPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.neighborPoints" title="Link to this definition"></a></dt>
+<dd><p>Define array containing all neighbor indexes of a certain point in a matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>j</strong> (<em>int</em>) – Index in the matrix of the point being analyzed (flattened matrix).</p></li>
+<li><p><strong>rows</strong> (<em>int</em>) – Number of rows in the matrix.</p></li>
+<li><p><strong>columns</strong> (<em>int</em>) – Number of columns in the matrix.</p></li>
+<li><p><strong>connectivity</strong> (<em>str</em>) – Type of neighbor connectivity (8-connectivity or 4-connectivity).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array with indexes of neighbors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.neighborPointsD">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">neighborPointsD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#neighborPointsD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.neighborPointsD" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Define array containing the indexes surrounding the index j at a given</dt><dd><p>distance dp in a matrix [rows,columns] (8-connectivity).</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rows</strong> (<em>int</em>) – Number of rows in the matrix.</p></li>
+<li><p><strong>columns</strong> (<em>int</em>) – Number of columns in the matrix.</p></li>
+<li><p><strong>j</strong> (<em>int</em>) – Index in matrix of the point being analyzed (flattened matrix).</p></li>
+<li><p><strong>dp</strong> (<em>int</em>) – Pixel number at the wanted distance (1 being the closest neighbor possible).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array with indexes of neighbors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.nmbNeighbors">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">nmbNeighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binaryimage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#nmbNeighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.nmbNeighbors" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Extract a matrix (of size of the binary image) that contains the</dt><dd><p>number of positive neighbors for each pixel of the binary image.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>binaryimage</strong> (<em>numpy.ndarray</em>) – Matrix of zeros and ones (or TRUE’s and FALSE’s).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Matrix with the number of positive neighbors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.normal2angle">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">normal2angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#normal2angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.normal2angle" title="Link to this definition"></a></dt>
+<dd><p>Calculates the orientation (in dip azimuth and dip) of the plane
+according to its normal (in x, y, z).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>normal</strong> (<em>numpy.ndarray</em>) – Normal vector: n = [x, y, z].</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Azimuth (dip azimuth) and dip of the plane expressed in angles.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.plungeRot">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">plungeRot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#plungeRot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.plungeRot" title="Link to this definition"></a></dt>
+<dd><p>Calculates the plunge of an axis with a given trend and through which a
+plane with a given orientation goes through.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>azim</strong> (<em>float</em>) – Angles of plane orientation (angles degree °).</p></li>
+<li><p><strong>dip</strong> (<em>float</em>) – Angles of plane dip (angles degree °).</p></li>
+<li><p><strong>trend</strong> (<em>float</em>) – Angles of trend (plunge azimuth) (angles degree °).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Angles of axis plunge (angles degree °) that hosts the given plane.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.sortLine">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">sortLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matSize</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#sortLine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.sortLine" title="Link to this definition"></a></dt>
+<dd><p>Sorts a vector of points to connect them into a line and attribute
+an order (2D only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ind</strong> (<em>array_like</em>) – Indexes of points in a matrix.</p></li>
+<li><p><strong>matSize</strong> (<em>tuple</em>) – Size/shape of matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>newi</strong> – Newly sorted/ordered indexes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.stereoLine">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">stereoLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#stereoLine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.stereoLine" title="Link to this definition"></a></dt>
+<dd><p>Extracts coordinates of a projected line on a stereonet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trend</strong> (<em>float</em>) – Angle of trend (plunge azimuth) of the line.</p></li>
+<li><p><strong>plunge</strong> (<em>float</em>) – Plunge of the line.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>[x_stereo, y_stereo]</strong> – Coordinates of point(s) in a stereonet.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_general.vect2angle">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_general.</span></span><span class="sig-name descname"><span class="pre">vect2angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_general.html#vect2angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_general.vect2angle" title="Link to this definition"></a></dt>
+<dd><p>Extracts from vectors (vx, vy, vz) its axis directions in angles (geology style).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> (<em>list</em>) – Vector: v = [vx, vy, vz].</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>trend, plunge</strong> – Angles of trend (plunge azimuth) and plunge of the vector.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-TIE.TIE_visual">
+<span id="tie-visual"></span><h2>TIE_Visual<a class="headerlink" href="#module-TIE.TIE_visual" title="Link to this heading"></a></h2>
+<p>Created on Wed Mar 31 12:20:00 2021
+&#64;author: Anna Rauch</p>
+<p>This script contains a set of functions/methods that are useful to
+display and visualize the TIE-results.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.bed2cmap">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">bed2cmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">BEDrst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legendfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leg_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#bed2cmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.bed2cmap" title="Link to this definition"></a></dt>
+<dd><p>Color Information For Bedrock.</p>
+<p>Transforms the raw-bedrock raster in a scalar matrix and extracts based
+on a prepared textfile the color (rgb-values) of the litho-stratigraphic
+units present and re-structures it in a cmap-matrix. If the legendfile
+contains label information, you can also extract the legend string values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BEDrst</strong> (<em>numpy.ndarray</em>) – Bedrock raster matrix.</p></li>
+<li><p><strong>legendfile</strong> (<em>str</em>) – Tab-separated textfile [bedrock_ID, R, G, B, label].</p></li>
+<li><p><strong>leg_labels</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to extract labels (e.g., ‘Schrattenkalk’) or not.
+Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>cm<span class="classifier">numpy.ndarray</span></dt><dd><p>Scalar matrix.</p>
+</dd>
+<dt>cmap<span class="classifier">numpy.ndarray</span></dt><dd><p>Colormap for bedrock information.</p>
+</dd>
+<dt>formations<span class="classifier">list</span></dt><dd><p>List of labels for legend. If leg_labels==False, then formations corresponds to the original Bedrock ID.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.colorClassID">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">colorClassID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment_OBJ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#colorClassID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.colorClassID" title="Link to this definition"></a></dt>
+<dd><p>Color Information Trace Classification.</p>
+<p>Extracts color code for TIE-classification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>segment_OBJ</strong> (<em>TIEclass.segment_OBJ</em>) – Segment object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Normalized RGB-value corresponding to TIE-class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.createCmap">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">createCmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgbv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#createCmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.createCmap" title="Link to this definition"></a></dt>
+<dd><p>Create Cmap.</p>
+<p>Creates a continuous color range (n values) from one rgb value (rgbv) to the other(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rgbv</strong> (<em>numpy.ndarray</em>) – Vector containing rgb-values of endmembers.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Resolution of cmap (number of values in cmap).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Newly created cmap.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.showOrientBars">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">showOrientBars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stereo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#showOrientBars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.showOrientBars" title="Link to this definition"></a></dt>
+<dd><p>Show orientation bars along traces in 3D or stereo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>traces</strong> (<em>list</em><em> of </em><em>trace_OBJ</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>vx</strong> (<em>numpy.ndarray</em>) – Flattened x-, y-, and z-coordinate matrices.</p></li>
+<li><p><strong>vy</strong> (<em>numpy.ndarray</em>) – Flattened x-, y-, and z-coordinate matrices.</p></li>
+<li><p><strong>vz</strong> (<em>numpy.ndarray</em>) – Flattened x-, y-, and z-coordinate matrices.</p></li>
+<li><p><strong>stereo</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to display the bars in stereo.
+If True, the bar length is stereographically projected on the map.
+Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>bar</strong> – Handle to the plot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mayavi.modules.surface.Surface</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.showOverview3D">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">showOverview3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BTraces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FTraces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ATraces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WithlabelsB</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WithlabelsF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WithlabelsA</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Textsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#showOverview3D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.showOverview3D" title="Link to this definition"></a></dt>
+<dd><p>Show Geological Map In 3d (No Tie)</p>
+<p>Displays the geological map in 3D, as well as the different trace sets and
+their ID (yet, no TIE classification).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mx</strong> (<em>array-like</em>) – Coordinate matrices of the analyzed extent.</p></li>
+<li><p><strong>my</strong> (<em>array-like</em>) – Coordinate matrices of the analyzed extent.</p></li>
+<li><p><strong>mz</strong> (<em>array-like</em>) – Coordinate matrices of the analyzed extent.</p></li>
+<li><p><strong>mc</strong> (<em>array-like</em>) – Scalar field of bedrock id’s.</p></li>
+<li><p><strong>cmap</strong> (<em>list</em><em>, </em><em>optional</em>) – Bedrock colormap. Default is Mayavi’s default cmap.</p></li>
+<li><p><strong>BTraces</strong> (<em>list</em><em>, </em><em>optional</em>) – List of trace_OBJ of bedrock interface traces. Default is an empty list.</p></li>
+<li><p><strong>FTraces</strong> (<em>list</em><em>, </em><em>optional</em>) – List of trace_OBJ of faults (tectonic boundaries). Default is an empty list.</p></li>
+<li><p><strong>ATraces</strong> (<em>list</em><em>, </em><em>optional</em>) – List of trace_OBJ of axial traces. Default is an empty list.</p></li>
+<li><p><strong>Textsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Text size of trace labels. Default is 30.</p></li>
+<li><p><strong>WithlabelsB</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to add trace ID on the figure for bedrock traces.
+Default is True.</p></li>
+<li><p><strong>WithlabelsF</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to add trace ID on the figure for fault traces.
+Default is True.</p></li>
+<li><p><strong>WithlabelsA</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to add trace ID on the figure for axial traces.
+Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>fig</strong> – Handle to the figure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mayavi.mlab.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.showOverviewMap">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">showOverviewMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BTraces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FTraces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ATraces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leg_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WithSeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#showOverviewMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.showOverviewMap" title="Link to this definition"></a></dt>
+<dd><p>Show Geological Map In 2d As An Overview</p>
+<p>Displays the geological map in 2D (with legend), as well as different
+trace sets and their ID (yet, no TIE classification).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mx</strong> (<em>array-like</em>) – Coordinate matrices of the analyzed extent.</p></li>
+<li><p><strong>my</strong> (<em>array-like</em>) – Coordinate matrices of the analyzed extent.</p></li>
+<li><p><strong>mz</strong> (<em>array-like</em>) – Coordinate matrices of the analyzed extent.</p></li>
+<li><p><strong>mc</strong> (<em>array-like</em>) – Scalar field of bedrock id’s.</p></li>
+<li><p><strong>cmap</strong> (<em>list</em><em>, </em><em>optional</em>) – Bedrock colormap. Default is Matplotlib’s default cmap.</p></li>
+<li><p><strong>BTraces</strong> (<em>list</em><em>, </em><em>optional</em>) – List of trace_OBJ of bedrock interface traces. Default is an empty list.</p></li>
+<li><p><strong>FTraces</strong> (<em>list</em><em>, </em><em>optional</em>) – List of trace_OBJ of faults (tectonic boundaries). Default is an empty list.</p></li>
+<li><p><strong>ATraces</strong> (<em>list</em><em>, </em><em>optional</em>) – List of trace_OBJ of axial traces. Default is an empty list.</p></li>
+<li><p><strong>leg_labels</strong> (<em>list</em><em>, </em><em>optional</em>) – List of labels for bedrock units. Default is an empty list.</p></li>
+<li><p><strong>WithSeg</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean - show segmentation. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – Handle to the figure.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes._axes.Axes</em>) – Handle to the axes.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.showSigStereo">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">showSigStereo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace_OBJ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#showSigStereo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.showSigStereo" title="Link to this definition"></a></dt>
+<dd><p>Show Trace Signals As Stereographic Projection</p>
+<p>Displays the evolution of the chords (1st subplot) and chord planes
+(2nd plot) of a specific trace by means of a stereographic projection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>trace_OBJ</strong> (<em>trace object</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – The trace object for which signals are to be displayed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>fig</strong> – Handle to the figure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.showSignal">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">showSignal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace_OBJ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#showSignal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.showSignal" title="Link to this definition"></a></dt>
+<dd><p>Show Trace Signals</p>
+<p>Displays signals of a specific trace. First subplot: major signals -
+alpha (normal and reverse) and beta (normal and reverse) and their
+signal heights. Second subplot: signal of the orthogonal distance
+between chords forming a chord plane (normalized to the total length of
+the trace).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>trace_OBJ</strong> (<em>trace object</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – The trace object for which signals are to be displayed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>fig</strong> – Handle to the figure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.showTIEmap">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">showTIEmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MainTrace_Set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AuxTrace_Set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ShowBars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#showTIEmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.showTIEmap" title="Link to this definition"></a></dt>
+<dd><p>Show Tie-Results In 3d.</p>
+<p>Displays the TIE-results in 3D on top of the slightly transparent geological map.
+TIE-results: (1) trace segments are colored according to TIE-class, (2) orientation
+bars indicate chord plane orientations along the trace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mx</strong> (<em>numpy.ndarray</em>) – Coordinate matrixes of analyzed extent.</p></li>
+<li><p><strong>my</strong> (<em>numpy.ndarray</em>) – Coordinate matrixes of analyzed extent.</p></li>
+<li><p><strong>mz</strong> (<em>numpy.ndarray</em>) – Coordinate matrixes of analyzed extent.</p></li>
+<li><p><strong>mc</strong> (<em>list</em><em>, </em><em>optional</em>) – Scalar field of bedrock id’s.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Bedrock colormap. Default is mayavi’s default cmap.</p></li>
+<li><p><strong>MainTrace_Set</strong> (<em>list</em><em>, </em><em>optional</em>) – List of tie-analyzed trace objects.</p></li>
+<li><p><strong>AuxTrace_Set</strong> (<em>list</em><em>, </em><em>optional</em>) – List of auxiliary trace objects that are to be neutrally displayed (e.g., fault traces).</p></li>
+<li><p><strong>ShowBars</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to show orientation bars or not. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Handle to the figure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mayavi.modules.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.sigHdiagram">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">sigHdiagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[3,</span> <span class="pre">9,</span> <span class="pre">18,</span> <span class="pre">90]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#sigHdiagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.sigHdiagram" title="Link to this definition"></a></dt>
+<dd><p>Show Signal Height Diagram.</p>
+<p>Displays a scatter plot with the signal height h_alpha as a function of the
+signal height h_beta for each trace in a trace set. The classification
+boundaries (pth) are displayed as background information. The dots are
+colored according to their TIE-classification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace_set</strong> (<em>list</em><em> of </em><em>trace_OBJ</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>pth</strong> (<em>list</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Planarity threshold used to classify the traces.
+Default is [3, 9, 18, 90].</p></li>
+<li><p><strong>txt</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to display the trace’s id or not.
+Default is True.</p></li>
+<li><p><strong>scale</strong> (<em>str</em><em>, </em><em>optional</em>) – Scale for displaying the SH-diagram. “log” for logarithmic scale,
+“lin” for linear scale. Default is “lin”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>fig</strong> – Handle to the figure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_visual.stereoPlot">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_visual.</span></span><span class="sig-name descname"><span class="pre">stereoPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WithCircles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'no'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_visual.html#stereoPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_visual.stereoPlot" title="Link to this definition"></a></dt>
+<dd><p>Stereoplot.</p>
+<p>Displays a stereonet (“Wulff - preservation of angles”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – Handle to the axes in which the stereonet should be displayed.</p></li>
+<li><p><strong>with_circles</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to show the great circles or only show major axes.
+Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ax</strong> – Handle to the axes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.axes.Axes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-TIE.TIE_core">
+<span id="tie-core"></span><h2>TIE_Core<a class="headerlink" href="#module-TIE.TIE_core" title="Link to this heading"></a></h2>
+<p>Created on Fri Apr 23 09:19:29 2021
+&#64;author: Anna Rauch</p>
+<p>This script contains a set of general functions/methods that perform the
+core-steps of the TIE-method (i.e. the actual TIE-steps)</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.changeTHseg">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">changeTHseg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newTH</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#changeTHseg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.changeTHseg" title="Link to this definition"></a></dt>
+<dd><p>Change Threshold For Segmentation.</p>
+<p>Changes the threshold that defines the convexity size to segment the traces
+for a specific trace n and performs the TIE on new segmentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>X</strong> (<em>array_like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Y</strong> (<em>array_like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Z</strong> (<em>array_like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Trace ID of the trace that is going to be analyzed with changed threshold.</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em>, </em><em>optional</em>) – Amplitude expressed in % by which the defined threshold should be
+lowered (negative) or increased (positive). Default is -10.</p></li>
+<li><p><strong>newTH</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Newly defined convexity size threshold [peak prominence, peak width].
+If newTH is defined, the amplitude is ignored. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with adapted segmentation for the specific trace object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.classifyTRACE">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">classifyTRACE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#classifyTRACE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.classifyTRACE" title="Link to this definition"></a></dt>
+<dd><p>Classify traces based on TIE parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects to be classified.</p></li>
+<li><p><strong>pth</strong> (<em>list</em><em> of </em><em>float</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Planarity thresholds for classification. If None, default thresholds
+[3, 9, 18] will be used. Must be of size 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input list of trace objects with added classification parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.clearTIE">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">clearTIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#clearTIE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.clearTIE" title="Link to this definition"></a></dt>
+<dd><p>Clear TIE information from trace objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>n</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of trace IDs (integers) that designate the traces to be cleared.
+If n is None (default), all traces will be cleared.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with suppressed TIE information.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.extractAlpha">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">extractAlpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#extractAlpha"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.extractAlpha" title="Link to this definition"></a></dt>
+<dd><p>Extracts alpha signal from traces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with added alpha values for each trace object (respectively
+each chord object).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.extractBeta">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">extractBeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#extractBeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.extractBeta" title="Link to this definition"></a></dt>
+<dd><p>Extracts beta signal from traces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with added beta values for each trace object (respectively
+each chordPlane object).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.extractChdPlanes">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">extractChdPlanes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mZ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#extractChdPlanes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.extractChdPlanes" title="Link to this definition"></a></dt>
+<dd><p>Extracts chord planes from traces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>mX</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+<li><p><strong>mY</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+<li><p><strong>mZ</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with added list of chord plane objects (TIE_classes.chordPlane_OBJ)
+to each trace object (respectively each segment object).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.extractChords">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">extractChords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mZ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#extractChords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.extractChords" title="Link to this definition"></a></dt>
+<dd><p>Extracts connecting chords of a trace set (1st step of TIE).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>mX</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+<li><p><strong>mY</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+<li><p><strong>mZ</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with added list of chords (TIE_classes.chords_OBJ)
+to each trace object (respectively each segment object).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.extractOrientBars">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">extractOrientBars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#extractOrientBars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.extractOrientBars" title="Link to this definition"></a></dt>
+<dd><p>Extraction of orientation bars (TIE).</p>
+<p>Extracts orientation bars from chord planes. Chord plane values are
+distributed along the trace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace_OBJ</em>) – List of trace objects containing basic TRACE information
+(any TRACE set, could also be FAULTS).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with added orientation bar values to each trace object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace_OBJ</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.mergeSeg">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">mergeSeg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#mergeSeg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.mergeSeg" title="Link to this definition"></a></dt>
+<dd><p>Merges two or more segments of a certain trace (trace_OBJ) into one single
+segment and reclassifies it according to TIE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – ID of specific trace_OBJ (only one trace_OBJ at a time).</p></li>
+<li><p><strong>s</strong> (<em>list</em>) – List of segments that will be merged (e.g., [2, 3]).</p></li>
+<li><p><strong>X</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Y</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Z</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with merged segments in the specific trace_OBJ.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.mergeTraces">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">mergeTraces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#mergeTraces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.mergeTraces" title="Link to this definition"></a></dt>
+<dd><p>Merges two or more traces into one single trace object
+and reclassifies it according to TIE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>tn</strong> (<em>list</em>) – List of trace IDs that will be merged (e.g., [2, 3]).</p></li>
+<li><p><strong>X</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Y</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Z</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with merged traces (new IDs).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.segSeg">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">segSeg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#segSeg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.segSeg" title="Link to this definition"></a></dt>
+<dd><p>Analyses a certain trace segment for potential segmentation at a
+more detailed scale. Important for long irregular traces that were not
+segmented during the first segmentation process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – ID of the trace object that contains the segment.</p></li>
+<li><p><strong>s</strong> (<em>int</em>) – ID of the segment that will be re-analyzed for segmentation.</p></li>
+<li><p><strong>X</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Y</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+<li><p><strong>Z</strong> (<em>array-like</em>) – Coordinate vectors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with potentially added segments.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.segmentTRACE">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">segmentTRACE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mZ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peakthresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[100,</span> <span class="pre">15]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#segmentTRACE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.segmentTRACE" title="Link to this definition"></a></dt>
+<dd><p>Segments the traces at their inflection points defined based on
+a peak threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace objects</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects.</p></li>
+<li><p><strong>mX</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+<li><p><strong>mY</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+<li><p><strong>mZ</strong> (<em>array-like</em>) – Matrices of coordinates of the analyzed extent.</p></li>
+<li><p><strong>peakthresh</strong> (<em>list</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – Peak thresholds for convexity [peak prominence, peak width].
+Default is [100, 15].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – List with added segmentation where needed: list of
+segment objects (TIE_classes.segment_OBJ). Where no segmentation occurred,
+only one segment for one trace exists.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace objects (TIE_classes.trace_OBJ)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIE.TIE_core.tie">
+<span class="sig-prename descclassname"><span class="pre">TIE.TIE_core.</span></span><span class="sig-name descname"><span class="pre">tie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TRACES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[3,</span> <span class="pre">9,</span> <span class="pre">18]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peakthresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[100,</span> <span class="pre">15]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TIE/TIE_core.html#tie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TIE.TIE_core.tie" title="Link to this definition"></a></dt>
+<dd><p>Performs the entire TIE analysis, step by step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TRACES</strong> (<em>list</em><em> of </em><em>trace_OBJ</em><em> (</em><em>TIE_classes.trace_OBJ</em><em>)</em>) – List of trace objects for TIE analysis.</p></li>
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – Vectors of X and Y coordinates of the analyzed extent.</p></li>
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em>) – Vectors of X and Y coordinates of the analyzed extent.</p></li>
+<li><p><strong>Z</strong> (<em>numpy.ndarray</em>) – Matrix of Z values of the analyzed extent (size [len(X), len(Y)]).</p></li>
+<li><p><strong>pth</strong> (<em>list</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Planarity thresholds for TIE classification. Default is [3, 9, 18].</p></li>
+<li><p><strong>seg</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating if the trace should first undergo a segmentation
+process before extracting the trace information. Default is False.</p></li>
+<li><p><strong>peakthresh</strong> (<em>list</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Peak thresholds for convexity [peak prominence, peak width]. Default
+is [90, 15], and it is not used if seg=False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TRACES</strong> – The same list with added TIE information.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of trace_OBJ</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-TIE.TIE_classes">
+<span id="tie-classes"></span><h2>TIE_classes<a class="headerlink" href="#module-TIE.TIE_classes" title="Link to this heading"></a></h2>
+<p>Created on Fri Apr 23 11:43:27 2021
+&#64;author: Anna Rauch</p>
+<p>This script contains a set of object definitions (classes), which are the main
+structure forms, in which the trace information is stored. It is a tree-based
+structure, so that list of objects can be stored within a different object.
+As an example: a trace_OBJ stores a list of segment_OBJ, each segment_OBJ
+itself contains a list of chordPlane_OBJ…</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2024, Anna Rauch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

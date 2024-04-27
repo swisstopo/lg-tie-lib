@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIE.TIE_visual &mdash; TIE  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TIE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TIE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">TIE.TIE_visual</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for TIE.TIE_visual</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Wed Mar 31 12:20:00 2021</span>
+<span class="sd">@author: Anna Rauch</span>
+
+<span class="sd">This script contains a set of functions/methods that are useful to</span>
+<span class="sd">display and visualize the TIE-results.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">TIE</span> <span class="kn">import</span> <span class="n">TIE_general</span> <span class="k">as</span> <span class="n">TIEgen</span>
+<span class="kn">from</span> <span class="nn">TIE</span> <span class="kn">import</span> <span class="n">TIE_classes</span> <span class="k">as</span> <span class="n">TIEclass</span>
+<span class="kn">from</span> <span class="nn">mayavi</span> <span class="kn">import</span> <span class="n">mlab</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+
+
+<div class="viewcode-block" id="bed2cmap">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.bed2cmap">[docs]</a>
+<span class="k">def</span> <span class="nf">bed2cmap</span><span class="p">(</span><span class="n">BEDrst</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">legendfile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">leg_labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Color Information For Bedrock.</span>
+
+<span class="sd">    Transforms the raw-bedrock raster in a scalar matrix and extracts based</span>
+<span class="sd">    on a prepared textfile the color (rgb-values) of the litho-stratigraphic</span>
+<span class="sd">    units present and re-structures it in a cmap-matrix. If the legendfile</span>
+<span class="sd">    contains label information, you can also extract the legend string values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    BEDrst : numpy.ndarray</span>
+<span class="sd">        Bedrock raster matrix.</span>
+<span class="sd">    legendfile : str</span>
+<span class="sd">        Tab-separated textfile [bedrock_ID, R, G, B, label].</span>
+<span class="sd">    leg_labels : bool, optional</span>
+<span class="sd">        Boolean indicating whether to extract labels (e.g., &#39;Schrattenkalk&#39;) or not.</span>
+<span class="sd">        Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        cm : numpy.ndarray</span>
+<span class="sd">            Scalar matrix.</span>
+<span class="sd">        cmap : numpy.ndarray</span>
+<span class="sd">            Colormap for bedrock information.</span>
+<span class="sd">        formations : list</span>
+<span class="sd">            List of labels for legend. If leg_labels==False, then formations corresponds to the original Bedrock ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">BEDrst</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">,</span> <span class="n">kind</span><span class="p">)</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">BEDrst</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+    <span class="n">leg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">legendfile</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">k_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">kind</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kind</span><span class="p">)):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">BEDrst</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">kind</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
+        <span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">k_col</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">leg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">kind</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">BEDrst</span><span class="p">))</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">BEDrst</span><span class="o">.</span><span class="n">flatten</span><span class="p">())):</span>
+        <span class="n">c_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">k_col</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">c_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">c_step</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">cmap</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_step</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">c_step</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="p">[</span><span class="mi">230</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">230</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">c_step</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ind1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_step</span><span class="p">[</span><span class="n">ci</span><span class="p">])</span>
+            <span class="n">ind2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_step</span><span class="p">[</span><span class="n">ci</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">rgb_c</span> <span class="o">=</span> <span class="n">leg</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k_col</span><span class="p">[</span><span class="n">ci</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]),</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">cmap</span><span class="p">[</span><span class="n">ind1</span><span class="p">:</span><span class="n">ind2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ind2</span> <span class="o">-</span> <span class="n">ind1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="n">rgb_c</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">c_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">k_col</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">c_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">c_step</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c_step</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ind1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_step</span><span class="p">[</span><span class="n">ci</span><span class="p">])</span>
+            <span class="n">ind2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_step</span><span class="p">[</span><span class="n">ci</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">rgb_c</span> <span class="o">=</span> <span class="n">leg</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k_col</span><span class="p">[</span><span class="n">ci</span><span class="p">]),</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">cmap</span><span class="p">[</span><span class="n">ind1</span><span class="p">:</span><span class="n">ind2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ind2</span> <span class="o">-</span> <span class="n">ind1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="n">rgb_c</span>
+    <span class="n">cmap</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">leg_labels</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">legendfile</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">ki</span><span class="p">)]</span> <span class="k">for</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">k_col</span><span class="p">]</span>
+        <span class="n">tokens_column_number</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">formations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">BEDrst</span><span class="o">.</span><span class="n">flatten</span><span class="p">())):</span>
+            <span class="n">formations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Unconsolidated Deposit&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">formations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="n">tokens_column_number</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formations</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">ki</span><span class="p">)</span> <span class="k">for</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">kind</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">cm</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">formations</span></div>
+
+
+
+<div class="viewcode-block" id="colorClassID">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.colorClassID">[docs]</a>
+<span class="k">def</span> <span class="nf">colorClassID</span><span class="p">(</span><span class="n">segment_OBJ</span><span class="p">:</span> <span class="n">TIEclass</span><span class="o">.</span><span class="n">segment_OBJ</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Color Information Trace Classification.</span>
+
+<span class="sd">    Extracts color code for TIE-classification.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    segment_OBJ : TIEclass.segment_OBJ</span>
+<span class="sd">        Segment object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Normalized RGB-value corresponding to TIE-class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cmapblue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mi">1</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">cmapred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">[</span><span class="mf">0.98</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">255</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">180</span> <span class="o">/</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">216</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">113</span> <span class="o">/</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.616</span><span class="p">,</span> <span class="mf">0.106</span><span class="p">,</span> <span class="mf">0.286</span><span class="p">],</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">classID</span> <span class="o">=</span> <span class="n">segment_OBJ</span><span class="o">.</span><span class="n">classID</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment_OBJ</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+        <span class="n">c_code</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">classID</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">c_code</span> <span class="o">=</span> <span class="n">cmapblue</span><span class="p">[</span><span class="n">classID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">c_code</span> <span class="o">=</span> <span class="n">cmapred</span><span class="p">[</span><span class="n">classID</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">c_code</span></div>
+
+
+
+<div class="viewcode-block" id="createCmap">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.createCmap">[docs]</a>
+<span class="k">def</span> <span class="nf">createCmap</span><span class="p">(</span><span class="n">rgbv</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create Cmap.</span>
+
+<span class="sd">    Creates a continuous color range (n values) from one rgb value (rgbv) to the other(s).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rgbv : numpy.ndarray</span>
+<span class="sd">        Vector containing rgb-values of endmembers.</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Resolution of cmap (number of values in cmap).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Newly created cmap.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="n">nint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rgbv</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">cint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nint</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgbv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">TIEgen</span><span class="o">.</span><span class="n">Mbox</span><span class="p">(</span>
+            <span class="s2">&quot;SORRY&quot;</span><span class="p">,</span> <span class="s2">&quot;at least two rgb values are necessary to crate a colormap&quot;</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rgbv</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">cint1</span> <span class="o">=</span> <span class="n">cint</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">cint2</span> <span class="o">=</span> <span class="n">cint</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">dif</span> <span class="o">=</span> <span class="n">cint2</span> <span class="o">-</span> <span class="n">cint1</span>
+            <span class="n">cstp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="n">rgbv</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">dif</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">rgbv</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">dif</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">rgbv</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">dif</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">cstp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cmap1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dif</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">dif</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cmap1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">dif</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">cstp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cmap2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dif</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">dif</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cmap2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">dif</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">cstp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cmap3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">dif</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">dif</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cmap3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">dif</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">rgbv</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="n">cmap</span><span class="p">[</span><span class="n">cint</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="p">:</span> <span class="n">cint</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">cmap1</span><span class="p">,</span> <span class="n">cmap2</span><span class="p">,</span> <span class="n">cmap3</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cmap</span></div>
+
+
+
+<div class="viewcode-block" id="showOrientBars">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.showOrientBars">[docs]</a>
+<span class="k">def</span> <span class="nf">showOrientBars</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">vz</span><span class="p">,</span> <span class="n">stereo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show orientation bars along traces in 3D or stereo.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    traces : list of trace_OBJ (TIE_classes.trace_OBJ)</span>
+<span class="sd">        List of trace objects.</span>
+<span class="sd">    vx, vy, vz : numpy.ndarray</span>
+<span class="sd">        Flattened x-, y-, and z-coordinate matrices.</span>
+<span class="sd">    stereo : bool, optional</span>
+<span class="sd">        Boolean indicating whether to display the bars in stereo.</span>
+<span class="sd">        If True, the bar length is stereographically projected on the map.</span>
+<span class="sd">        Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bar : mayavi.modules.surface.Surface</span>
+<span class="sd">        Handle to the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">or_bar</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">orientbar</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">vx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">vx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">barlength</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">/</span> <span class="n">cs</span>
+
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">or_bar</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">20</span> <span class="o">/</span> <span class="n">cs</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">stereo</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">tr</span><span class="p">,</span> <span class="n">pl</span> <span class="o">=</span> <span class="n">TIEgen</span><span class="o">.</span><span class="n">vect2angle</span><span class="p">(</span><span class="n">or_bar</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+                <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">TIEgen</span><span class="o">.</span><span class="n">stereoLine</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">pl</span><span class="p">)</span>
+                <span class="n">bars</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">vx</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])],</span> <span class="n">vx</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])]</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">barlength</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">vy</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])],</span> <span class="n">vy</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])]</span> <span class="o">+</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">barlength</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">vz</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])],</span> <span class="n">vz</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])]],</span>
+                    <span class="n">tube_radius</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bars</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">vx</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])],</span> <span class="n">vx</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])]</span> <span class="o">+</span> <span class="n">or_bar</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">barlength</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">vy</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])],</span> <span class="n">vy</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])]</span> <span class="o">+</span> <span class="n">or_bar</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">barlength</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">vz</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])],</span> <span class="n">vz</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">m</span><span class="p">])]</span> <span class="o">+</span> <span class="n">or_bar</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">barlength</span><span class="p">],</span>
+                    <span class="n">tube_radius</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="n">bars</span></div>
+
+
+
+<div class="viewcode-block" id="showOverview3D">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.showOverview3D">[docs]</a>
+<span class="k">def</span> <span class="nf">showOverview3D</span><span class="p">(</span>
+    <span class="n">mx</span><span class="p">,</span>
+    <span class="n">my</span><span class="p">,</span>
+    <span class="n">mz</span><span class="p">,</span>
+    <span class="n">mc</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">BTraces</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">FTraces</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">ATraces</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">WithlabelsB</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">WithlabelsF</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">WithlabelsA</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">Textsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show Geological Map In 3d (No Tie)</span>
+
+<span class="sd">    Displays the geological map in 3D, as well as the different trace sets and</span>
+<span class="sd">    their ID (yet, no TIE classification).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mx, my, mz : array-like</span>
+<span class="sd">        Coordinate matrices of the analyzed extent.</span>
+<span class="sd">    mc : array-like</span>
+<span class="sd">        Scalar field of bedrock id&#39;s.</span>
+<span class="sd">    cmap : list, optional</span>
+<span class="sd">        Bedrock colormap. Default is Mayavi&#39;s default cmap.</span>
+<span class="sd">    BTraces : list, optional</span>
+<span class="sd">        List of trace_OBJ of bedrock interface traces. Default is an empty list.</span>
+<span class="sd">    FTraces : list, optional</span>
+<span class="sd">        List of trace_OBJ of faults (tectonic boundaries). Default is an empty list.</span>
+<span class="sd">    ATraces : list, optional</span>
+<span class="sd">        List of trace_OBJ of axial traces. Default is an empty list.</span>
+<span class="sd">    Textsize : int, optional</span>
+<span class="sd">        Text size of trace labels. Default is 30.</span>
+<span class="sd">    WithlabelsB : bool, optional</span>
+<span class="sd">        Boolean indicating whether to add trace ID on the figure for bedrock traces.</span>
+<span class="sd">        Default is True.</span>
+<span class="sd">    WithlabelsF : bool, optional</span>
+<span class="sd">        Boolean indicating whether to add trace ID on the figure for fault traces.</span>
+<span class="sd">        Default is True.</span>
+<span class="sd">    WithlabelsA : bool, optional</span>
+<span class="sd">        Boolean indicating whether to add trace ID on the figure for axial traces.</span>
+<span class="sd">        Default is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : mayavi.mlab.Figure</span>
+<span class="sd">        Handle to the figure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fgcolor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">bgcolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mz</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="n">mc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">module_manager</span><span class="o">.</span><span class="n">scalar_lut_manager</span><span class="o">.</span><span class="n">lut</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">cmap</span>
+
+    <span class="n">vx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">mx</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">vy</span> <span class="o">=</span> <span class="n">my</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">vz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">BTraces</span><span class="p">:</span>
+        <span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span>
+            <span class="n">vx</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vy</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vz</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span>
+            <span class="n">tube_radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bedrock trace &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">WithlabelsB</span><span class="p">:</span>
+            <span class="n">mlab</span><span class="o">.</span><span class="n">text3d</span><span class="p">(</span>
+                <span class="n">vx</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">vy</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">vz</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">70</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span>
+                <span class="n">scale</span><span class="o">=</span><span class="n">Textsize</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">fl</span> <span class="ow">in</span> <span class="n">FTraces</span><span class="p">:</span>
+        <span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span>
+            <span class="n">vx</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vy</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vz</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">tube_radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fault trace &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">WithlabelsF</span><span class="p">:</span>
+            <span class="n">mlab</span><span class="o">.</span><span class="n">text3d</span><span class="p">(</span>
+                <span class="n">vx</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">vy</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">vz</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">70</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">scale</span><span class="o">=</span><span class="n">Textsize</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ai</span> <span class="ow">in</span> <span class="n">ATraces</span><span class="p">:</span>
+        <span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span>
+            <span class="n">vx</span><span class="p">[</span><span class="n">ai</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vy</span><span class="p">[</span><span class="n">ai</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vz</span><span class="p">[</span><span class="n">ai</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">tube_radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;axial trace &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ai</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">WithlabelsA</span><span class="p">:</span>
+            <span class="n">mlab</span><span class="o">.</span><span class="n">text3d</span><span class="p">(</span>
+                <span class="n">vx</span><span class="p">[</span><span class="n">ai</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">vy</span><span class="p">[</span><span class="n">ai</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">vz</span><span class="p">[</span><span class="n">ai</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="mi">4</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">70</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">ai</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">scale</span><span class="o">=</span><span class="n">Textsize</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="n">mlab</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">mlab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+
+<div class="viewcode-block" id="showOverviewMap">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.showOverviewMap">[docs]</a>
+<span class="k">def</span> <span class="nf">showOverviewMap</span><span class="p">(</span>
+    <span class="n">mx</span><span class="p">,</span>
+    <span class="n">my</span><span class="p">,</span>
+    <span class="n">mc</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">mz</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">BTraces</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">FTraces</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">ATraces</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">leg_labels</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">WithSeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show Geological Map In 2d As An Overview</span>
+
+<span class="sd">    Displays the geological map in 2D (with legend), as well as different</span>
+<span class="sd">    trace sets and their ID (yet, no TIE classification).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mx, my, mz : array-like</span>
+<span class="sd">        Coordinate matrices of the analyzed extent.</span>
+<span class="sd">    mc : array-like</span>
+<span class="sd">        Scalar field of bedrock id&#39;s.</span>
+<span class="sd">    cmap : list, optional</span>
+<span class="sd">        Bedrock colormap. Default is Matplotlib&#39;s default cmap.</span>
+<span class="sd">    BTraces : list, optional</span>
+<span class="sd">        List of trace_OBJ of bedrock interface traces. Default is an empty list.</span>
+<span class="sd">    FTraces : list, optional</span>
+<span class="sd">        List of trace_OBJ of faults (tectonic boundaries). Default is an empty list.</span>
+<span class="sd">    ATraces : list, optional</span>
+<span class="sd">        List of trace_OBJ of axial traces. Default is an empty list.</span>
+<span class="sd">    leg_labels : list, optional</span>
+<span class="sd">        List of labels for bedrock units. Default is an empty list.</span>
+<span class="sd">    WithSeg : bool, optional</span>
+<span class="sd">        Boolean - show segmentation. Default is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        Handle to the figure.</span>
+<span class="sd">    ax : matplotlib.axes._axes.Axes</span>
+<span class="sd">        Handle to the axes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+        <span class="n">cmap_plt</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">cmap</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cmap_plt</span> <span class="o">=</span> <span class="s2">&quot;Greens&quot;</span>
+
+    <span class="n">vx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">mx</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">vy</span> <span class="o">=</span> <span class="n">my</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">mc</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_plt</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">vx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">vx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">BTraces</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">BTraces</span><span class="p">:</span>
+            <span class="n">tx</span> <span class="o">=</span> <span class="n">vx</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+            <span class="n">ty</span> <span class="o">=</span> <span class="n">vy</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+            <span class="n">txt_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="n">tx</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">ty</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">txt_name</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="n">c</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;circle,pad=0&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">WithSeg</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">Segment</span><span class="p">:</span>
+                    <span class="n">si1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">si2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">tx</span><span class="p">[</span><span class="n">si1</span><span class="p">],</span> <span class="n">ty</span><span class="p">[</span><span class="n">si1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">tx</span><span class="p">[</span><span class="n">si2</span><span class="p">],</span> <span class="n">ty</span><span class="p">[</span><span class="n">si2</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">Segment</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">simid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                            <span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">seg_name</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+                        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                            <span class="n">tx</span><span class="p">[</span><span class="n">simid</span><span class="p">],</span>
+                            <span class="n">ty</span><span class="p">[</span><span class="n">simid</span><span class="p">],</span>
+                            <span class="n">seg_name</span><span class="p">,</span>
+                            <span class="n">fontsize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                            <span class="n">c</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+                            <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;circle,pad=0&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">FTraces</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fl</span> <span class="ow">in</span> <span class="n">FTraces</span><span class="p">:</span>
+            <span class="n">fx</span> <span class="o">=</span> <span class="n">vx</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+            <span class="n">fy</span> <span class="o">=</span> <span class="n">vy</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+            <span class="n">txt_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="n">fx</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">fy</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">txt_name</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;circle,pad=0&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">WithSeg</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fl</span><span class="o">.</span><span class="n">Segment</span><span class="p">:</span>
+                    <span class="n">si1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">si2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">simid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">fx</span><span class="p">[</span><span class="n">si1</span><span class="p">],</span> <span class="n">fy</span><span class="p">[</span><span class="n">si1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">fx</span><span class="p">[</span><span class="n">si2</span><span class="p">],</span> <span class="n">fy</span><span class="p">[</span><span class="n">si2</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">Segment</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">seg_name</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+                        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                            <span class="n">fx</span><span class="p">[</span><span class="n">simid</span><span class="p">],</span>
+                            <span class="n">fy</span><span class="p">[</span><span class="n">simid</span><span class="p">],</span>
+                            <span class="n">seg_name</span><span class="p">,</span>
+                            <span class="n">fontsize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                            <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+                            <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;circle,pad=0&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ATraces</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">atr</span> <span class="ow">in</span> <span class="n">ATraces</span><span class="p">:</span>
+            <span class="n">atx</span> <span class="o">=</span> <span class="n">vx</span><span class="p">[</span><span class="n">atr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+            <span class="n">aty</span> <span class="o">=</span> <span class="n">vy</span><span class="p">[</span><span class="n">atr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">atx</span><span class="p">,</span> <span class="n">aty</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">txt_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">atr</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="n">atx</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">aty</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">txt_name</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="n">c</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;circle,pad=0&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">WithSeg</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">atr</span><span class="o">.</span><span class="n">Segment</span><span class="p">:</span>
+                    <span class="n">si1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">si2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">simid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">atx</span><span class="p">[</span><span class="n">si1</span><span class="p">],</span> <span class="n">aty</span><span class="p">[</span><span class="n">si1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">atx</span><span class="p">[</span><span class="n">si2</span><span class="p">],</span> <span class="n">aty</span><span class="p">[</span><span class="n">si2</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">atr</span><span class="o">.</span><span class="n">Segment</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">seg_name</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+                        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                            <span class="n">atx</span><span class="p">[</span><span class="n">simid</span><span class="p">],</span>
+                            <span class="n">aty</span><span class="p">[</span><span class="n">simid</span><span class="p">],</span>
+                            <span class="n">seg_name</span><span class="p">,</span>
+                            <span class="n">fontsize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                            <span class="n">c</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+                            <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;circle,pad=0&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">levmin</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span>
+        <span class="n">levmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+            <span class="n">mz</span><span class="p">,</span>
+            <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">vx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">vx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">levmin</span><span class="p">,</span> <span class="n">levmax</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+            <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">leg_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cmap_leg</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">indexes</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="n">patches</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">cmap_leg</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">leg_labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">leg_labels</span><span class="p">))</span>
+        <span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+            <span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span>
+            <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+
+<div class="viewcode-block" id="showSignal">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.showSignal">[docs]</a>
+<span class="k">def</span> <span class="nf">showSignal</span><span class="p">(</span><span class="n">trace_OBJ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show Trace Signals</span>
+
+<span class="sd">    Displays signals of a specific trace. First subplot: major signals -</span>
+<span class="sd">    alpha (normal and reverse) and beta (normal and reverse) and their</span>
+<span class="sd">    signal heights. Second subplot: signal of the orthogonal distance</span>
+<span class="sd">    between chords forming a chord plane (normalized to the total length of</span>
+<span class="sd">    the trace).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trace_OBJ : trace object (TIE_classes.trace_OBJ)</span>
+<span class="sd">        The trace object for which signals are to be displayed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        Handle to the figure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">trace_OBJ</span><span class="o">.</span><span class="n">Segment</span><span class="p">:</span>
+        <span class="n">Alpha</span> <span class="o">=</span> <span class="p">[</span><span class="n">chord</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">chord</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">Chords</span><span class="p">]</span>
+        <span class="n">Beta</span> <span class="o">=</span> <span class="p">[</span><span class="n">chdplane</span><span class="o">.</span><span class="n">beta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">chdplane</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">Chordplanes</span><span class="p">]</span>
+        <span class="n">Dist</span> <span class="o">=</span> <span class="p">[</span><span class="n">chdplane</span><span class="o">.</span><span class="n">dist_ratio</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">chdplane</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">Chordplanes</span><span class="p">]</span>
+        <span class="n">AlphaR</span> <span class="o">=</span> <span class="p">[</span><span class="n">chord</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">chord</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">Chords</span><span class="p">]</span>
+        <span class="n">BetaR</span> <span class="o">=</span> <span class="p">[</span><span class="n">chdplane</span><span class="o">.</span><span class="n">beta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">chdplane</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">Chordplanes</span><span class="p">]</span>
+        <span class="n">ha</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sigheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">hb</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sigheight</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">)</span>
+        <span class="n">la</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Alpha</span><span class="p">)</span>
+        <span class="n">lb</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Beta</span><span class="p">)</span>
+
+        <span class="n">lbeg</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">lend</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">id</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">la</span><span class="p">),</span>
+                <span class="n">Alpha</span><span class="p">,</span>
+                <span class="s2">&quot;g-&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;alpha normal&quot;</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">la</span><span class="p">),</span>
+                <span class="n">AlphaR</span><span class="p">,</span>
+                <span class="s2">&quot;g-.&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;alpha reverse&quot;</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="n">ha</span><span class="p">,</span> <span class="n">ha</span><span class="p">],</span> <span class="s2">&quot;g:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ha&quot;</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">lb</span><span class="p">),</span>
+                <span class="n">Beta</span><span class="p">,</span>
+                <span class="s2">&quot;y-&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;beta normal&quot;</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">lb</span><span class="p">),</span>
+                <span class="n">BetaR</span><span class="p">,</span>
+                <span class="s2">&quot;y-.&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;beta reverse&quot;</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="n">hb</span><span class="p">,</span> <span class="n">hb</span><span class="p">],</span> <span class="s2">&quot;y:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;hb&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">la</span><span class="p">),</span> <span class="n">Alpha</span><span class="p">,</span> <span class="s2">&quot;g-&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">la</span><span class="p">),</span> <span class="n">AlphaR</span><span class="p">,</span> <span class="s2">&quot;g-.&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="n">ha</span><span class="p">,</span> <span class="n">ha</span><span class="p">],</span> <span class="s2">&quot;g:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">lb</span><span class="p">),</span> <span class="n">Beta</span><span class="p">,</span> <span class="s2">&quot;y-&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">lb</span><span class="p">),</span> <span class="n">BetaR</span><span class="p">,</span> <span class="s2">&quot;y-.&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="n">hb</span><span class="p">,</span> <span class="n">hb</span><span class="p">],</span> <span class="s2">&quot;y:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lbeg</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span> <span class="s2">&quot;k:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lend</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span> <span class="s2">&quot;k:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">tit</span> <span class="o">=</span> <span class="s2">&quot;signal trace n° &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">trace_OBJ</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">tit</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;j / k [</span><span class="si">% o</span><span class="s2">f pixel length (m / l)]&quot;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;angle degrees [°]&quot;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">lend</span> <span class="o">+</span> <span class="mf">0.4</span><span class="p">,</span>
+            <span class="mi">30</span><span class="p">,</span>
+            <span class="s2">&quot;Seg. &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; (&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;pix)&quot;</span><span class="p">,</span>
+            <span class="n">rotation</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round4,pad=0.1&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">lend</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">182</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">lb</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Dist</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+                <span class="s2">&quot;y-&quot;</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;orthogonal distance btw chords&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">,</span> <span class="n">lb</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Dist</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;y-&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span>
+            <span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;k in </span><span class="si">% o</span><span class="s2">f trace length (l)&quot;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;d in </span><span class="si">% o</span><span class="s2">f trace length&quot;</span><span class="p">)</span>
+
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lbeg</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s2">&quot;k:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lend</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s2">&quot;k:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lbeg</span><span class="p">,</span> <span class="n">lend</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">lend</span> <span class="o">+</span> <span class="mf">0.4</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;Seg. &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; (&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;pix)&quot;</span><span class="p">,</span>
+            <span class="n">rotation</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round4,pad=0.1&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-small&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-small&quot;</span><span class="p">)</span>
+
+    <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;chord planes have physical meaning&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="s2">&quot;only vague physical meaning&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="s2">&quot;no physical meaning&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace_OBJ</span><span class="o">.</span><span class="n">Segment</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">trace_OBJ</span><span class="o">.</span><span class="n">Segment</span><span class="p">)),</span>
+    <span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">lend</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+
+<div class="viewcode-block" id="showSigStereo">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.showSigStereo">[docs]</a>
+<span class="k">def</span> <span class="nf">showSigStereo</span><span class="p">(</span><span class="n">trace_OBJ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show Trace Signals As Stereographic Projection</span>
+
+<span class="sd">    Displays the evolution of the chords (1st subplot) and chord planes</span>
+<span class="sd">    (2nd plot) of a specific trace by means of a stereographic projection.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trace_OBJ : trace object (TIE_classes.trace_OBJ)</span>
+<span class="sd">        The trace object for which signals are to be displayed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        Handle to the figure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace_OBJ</span><span class="o">.</span><span class="n">Segment</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ls</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Stereographic projection: trace n° &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">trace_OBJ</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">trace_OBJ</span><span class="o">.</span><span class="n">Segment</span><span class="p">:</span>
+        <span class="n">Chords</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">Chords</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Chords</span><span class="p">)</span>
+        <span class="n">axChd</span> <span class="o">=</span> <span class="p">[</span><span class="n">chord</span><span class="o">.</span><span class="n">vec_trend</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">chord</span> <span class="ow">in</span> <span class="n">Chords</span><span class="p">]</span>
+        <span class="n">axPl</span> <span class="o">=</span> <span class="p">[</span><span class="n">chord</span><span class="o">.</span><span class="n">vec_plunge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">chord</span> <span class="ow">in</span> <span class="n">Chords</span><span class="p">]</span>
+        <span class="n">ai</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">id</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">TIEgen</span><span class="o">.</span><span class="n">stereoLine</span><span class="p">(</span><span class="n">axChd</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axPl</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">)])</span>
+        <span class="n">x_Ax</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">y_Ax</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">l</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">half</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">halfpoint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">half</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">half</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">halfpoint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">half</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">rgbv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.13</span><span class="p">,</span> <span class="mf">0.54</span><span class="p">,</span> <span class="mf">0.13</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]])</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">createCmap</span><span class="p">(</span><span class="n">rgbv</span><span class="p">,</span> <span class="n">halfpoint</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ls</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ai_chd</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">ai_chdp</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ai_chd</span> <span class="o">=</span> <span class="p">(</span><span class="n">ai</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">ai_chdp</span> <span class="o">=</span> <span class="p">(</span><span class="n">ai</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">axs</span><span class="p">[</span><span class="n">ai_chd</span><span class="p">]</span> <span class="o">=</span> <span class="n">stereoPlot</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">ai_chd</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">halfpoint</span><span class="p">):</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">ai_chd</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_Ax</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_Ax</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]])</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">ai_chd</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_Ax</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">half</span><span class="p">],</span> <span class="n">y_Ax</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">half</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]])</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">ai_chd</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;seg. &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+        <span class="n">ChdPl</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">Chordplanes</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ChdPl</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">ai_chdp</span><span class="p">]</span> <span class="o">=</span> <span class="n">stereoPlot</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">ai_chdp</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">azim</span> <span class="o">=</span> <span class="n">ChdPl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plane_orient</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dip</span> <span class="o">=</span> <span class="n">ChdPl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plane_orient</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">TIEgen</span><span class="o">.</span><span class="n">greatCircle</span><span class="p">(</span><span class="n">azim</span><span class="p">,</span> <span class="n">dip</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="n">ai_chdp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">cmap</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+            <span class="n">x_stereo</span><span class="p">,</span> <span class="n">y_stereo</span> <span class="o">=</span> <span class="n">TIEgen</span><span class="o">.</span><span class="n">stereoLine</span><span class="p">(</span>
+                <span class="n">ChdPl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pole_orient</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ChdPl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pole_orient</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">ai_chdp</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_stereo</span><span class="p">,</span> <span class="n">y_stereo</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]])</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">ai_chdp</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;seg. &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="n">ai_chd</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;chord vector orientations&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">ai_chdp</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;chord plane (gc) &amp; pole orientations&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+
+<div class="viewcode-block" id="showTIEmap">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.showTIEmap">[docs]</a>
+<span class="k">def</span> <span class="nf">showTIEmap</span><span class="p">(</span>
+    <span class="n">mx</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">my</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">mz</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">mc</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">MainTrace_Set</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">AuxTrace_Set</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">ShowBars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mlab</span><span class="o">.</span><span class="n">figure</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show Tie-Results In 3d.</span>
+
+<span class="sd">    Displays the TIE-results in 3D on top of the slightly transparent geological map.</span>
+<span class="sd">    TIE-results: (1) trace segments are colored according to TIE-class, (2) orientation</span>
+<span class="sd">    bars indicate chord plane orientations along the trace.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mx : numpy.ndarray</span>
+<span class="sd">        Coordinate matrixes of analyzed extent.</span>
+<span class="sd">    my : numpy.ndarray</span>
+<span class="sd">        Coordinate matrixes of analyzed extent.</span>
+<span class="sd">    mz : numpy.ndarray</span>
+<span class="sd">        Coordinate matrixes of analyzed extent.</span>
+<span class="sd">    mc : list, optional</span>
+<span class="sd">        Scalar field of bedrock id&#39;s.</span>
+<span class="sd">    cmap : str, optional</span>
+<span class="sd">        Bedrock colormap. Default is mayavi&#39;s default cmap.</span>
+<span class="sd">    MainTrace_Set : list, optional</span>
+<span class="sd">        List of tie-analyzed trace objects.</span>
+<span class="sd">    AuxTrace_Set : list, optional</span>
+<span class="sd">        List of auxiliary trace objects that are to be neutrally displayed (e.g., fault traces).</span>
+<span class="sd">    ShowBars : bool, optional</span>
+<span class="sd">        Boolean indicating whether to show orientation bars or not. Default is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mayavi.modules.figure.Figure</span>
+<span class="sd">        Handle to the figure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;Greens&quot;</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">fgcolor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">bgcolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mz</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="n">mc</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">module_manager</span><span class="o">.</span><span class="n">scalar_lut_manager</span><span class="o">.</span><span class="n">lut</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">cmap</span>
+
+    <span class="n">vx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">mx</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">vy</span> <span class="o">=</span> <span class="n">my</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">vz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1"># analyzed trace set</span>
+    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">MainTrace_Set</span><span class="p">:</span>
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">vx</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+        <span class="n">ty</span> <span class="o">=</span> <span class="n">vy</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+        <span class="n">tz</span> <span class="o">=</span> <span class="n">vz</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">Segment</span><span class="p">:</span>
+            <span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span>
+                <span class="n">tx</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">],</span>
+                <span class="n">ty</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">],</span>
+                <span class="n">tz</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">colorClassID</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span>
+                <span class="n">tube_radius</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;analyzed trace &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">mlab</span><span class="o">.</span><span class="n">text3d</span><span class="p">(</span>
+                <span class="n">tx</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">ty</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">4</span><span class="p">]],</span>
+                <span class="n">tz</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">ind_normal</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">70</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">scale</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c1"># auxiliary trace set</span>
+    <span class="k">for</span> <span class="n">fl</span> <span class="ow">in</span> <span class="n">AuxTrace_Set</span><span class="p">:</span>
+        <span class="n">mlab</span><span class="o">.</span><span class="n">plot3d</span><span class="p">(</span>
+            <span class="n">vx</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vy</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">vz</span><span class="p">[</span><span class="n">fl</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">tube_radius</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;auxiliary trace &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ShowBars</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">showOrientBars</span><span class="p">(</span><span class="n">MainTrace_Set</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">vz</span><span class="p">)</span>
+
+    <span class="n">mlab</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">mlab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+
+<div class="viewcode-block" id="sigHdiagram">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.sigHdiagram">[docs]</a>
+<span class="k">def</span> <span class="nf">sigHdiagram</span><span class="p">(</span><span class="n">trace_set</span><span class="p">,</span> <span class="n">pth</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">90</span><span class="p">],</span> <span class="n">txt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;lin&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show Signal Height Diagram.</span>
+
+<span class="sd">    Displays a scatter plot with the signal height h_alpha as a function of the</span>
+<span class="sd">    signal height h_beta for each trace in a trace set. The classification</span>
+<span class="sd">    boundaries (pth) are displayed as background information. The dots are</span>
+<span class="sd">    colored according to their TIE-classification.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trace_set : list of trace_OBJ (TIE_classes.trace_OBJ)</span>
+<span class="sd">        List of trace objects.</span>
+<span class="sd">    pth : list of int, optional</span>
+<span class="sd">        Planarity threshold used to classify the traces.</span>
+<span class="sd">        Default is [3, 9, 18, 90].</span>
+<span class="sd">    txt : bool, optional</span>
+<span class="sd">        Boolean indicating whether to display the trace&#39;s id or not.</span>
+<span class="sd">        Default is True.</span>
+<span class="sd">    scale : str, optional</span>
+<span class="sd">        Scale for displaying the SH-diagram. &quot;log&quot; for logarithmic scale,</span>
+<span class="sd">        &quot;lin&quot; for linear scale. Default is &quot;lin&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        Handle to the figure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">x1</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mf">0.0001</span><span class="p">,</span>
+        <span class="mf">0.0005</span><span class="p">,</span>
+        <span class="mf">0.001</span><span class="p">,</span>
+        <span class="mf">0.005</span><span class="p">,</span>
+        <span class="mf">0.01</span><span class="p">,</span>
+        <span class="mf">0.05</span><span class="p">,</span>
+        <span class="mf">0.1</span><span class="p">,</span>
+        <span class="mf">0.2</span><span class="p">,</span>
+        <span class="mf">0.3</span><span class="p">,</span>
+        <span class="mf">0.4</span><span class="p">,</span>
+        <span class="mf">0.5</span><span class="p">,</span>
+        <span class="mf">0.6</span><span class="p">,</span>
+        <span class="mf">0.7</span><span class="p">,</span>
+        <span class="mf">0.8</span><span class="p">,</span>
+        <span class="mf">0.9</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mf">1.2</span><span class="p">,</span>
+        <span class="mf">1.2</span><span class="p">,</span>
+        <span class="mf">1.5</span><span class="p">,</span>
+        <span class="mf">1.8</span><span class="p">,</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="mf">2.5</span><span class="p">,</span>
+        <span class="mi">3</span><span class="p">,</span>
+        <span class="mf">3.8</span><span class="p">,</span>
+        <span class="mi">5</span><span class="p">,</span>
+        <span class="mi">6</span><span class="p">,</span>
+        <span class="mi">8</span><span class="p">,</span>
+        <span class="mi">10</span><span class="p">,</span>
+        <span class="mi">15</span><span class="p">,</span>
+        <span class="mi">20</span><span class="p">,</span>
+        <span class="mi">30</span><span class="p">,</span>
+        <span class="mi">40</span><span class="p">,</span>
+        <span class="mi">50</span><span class="p">,</span>
+        <span class="mi">60</span><span class="p">,</span>
+        <span class="mi">70</span><span class="p">,</span>
+        <span class="mi">90</span><span class="p">,</span>
+        <span class="mi">180</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">180</span> <span class="o">/</span> <span class="n">x0i</span> <span class="k">for</span> <span class="n">x0i</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">]</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">180</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s2">&quot;box&quot;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="s2">&quot;k:&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mi">11</span><span class="p">,</span>
+        <span class="mi">11</span><span class="p">,</span>
+        <span class="s2">&quot;p = 0°&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="o">=-</span><span class="mi">45</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round4,pad=0.5&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span> <span class="s2">&quot;k--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mi">120</span><span class="p">,</span>
+        <span class="mi">120</span><span class="p">,</span>
+        <span class="s2">&quot;s = 1&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round4,pad=0.5&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Signal-Height-Diagram&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;h_alpha&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;h_beta&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">pth</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="n">j</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="n">j</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="mi">170</span><span class="p">,</span>
+            <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;°&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round4,pad=0.1&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">trace_set</span><span class="p">:</span>
+        <span class="n">sl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">Segment</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">Segment</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sigheight</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">sigheight</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">colorClassID</span><span class="p">(</span><span class="n">s</span><span class="p">)])</span>
+            <span class="k">if</span> <span class="n">txt</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sl</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">txt_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">txt_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+                <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+                    <span class="n">dec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sigheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">30</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dec</span> <span class="o">=</span> <span class="mi">2</span>
+
+                <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">sigheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dec</span><span class="p">,</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">sigheight</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">txt_name</span><span class="p">,</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                    <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round4,pad=0&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+
+<div class="viewcode-block" id="stereoPlot">
+<a class="viewcode-back" href="../../api.html#TIE.TIE_visual.stereoPlot">[docs]</a>
+<span class="k">def</span> <span class="nf">stereoPlot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">WithCircles</span><span class="o">=</span><span class="s2">&quot;no&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stereoplot.</span>
+
+<span class="sd">    Displays a stereonet (&quot;Wulff - preservation of angles&quot;).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : matplotlib.axes.Axes</span>
+<span class="sd">        Handle to the axes in which the stereonet should be displayed.</span>
+<span class="sd">    with_circles : bool, optional</span>
+<span class="sd">        Boolean indicating whether to show the great circles or only show major axes.</span>
+<span class="sd">        Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : matplotlib.axes.Axes</span>
+<span class="sd">        Handle to the axes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+    <span class="n">xh</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">yh</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">xv</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">yv</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xh</span><span class="p">,</span> <span class="n">yh</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">yv</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelleft</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">0.04</span><span class="p">,</span> <span class="mf">1.07</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">WithCircles</span> <span class="o">==</span> <span class="s2">&quot;yes&quot;</span><span class="p">:</span>
+        <span class="n">vhf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+            <span class="n">rdip</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">18</span><span class="p">)</span>
+            <span class="n">rint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">rdip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">vhf</span><span class="p">]))</span>
+            <span class="n">radip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span> <span class="k">for</span> <span class="n">rt</span> <span class="ow">in</span> <span class="n">rint</span><span class="p">])</span>
+            <span class="n">rproj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">rdp</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">rdp</span> <span class="ow">in</span> <span class="n">radip</span><span class="p">])</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">rproj</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">vhf</span><span class="p">])</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">rproj</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">vi</span><span class="p">))</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">vhf</span><span class="p">])</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">rproj</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">vhf</span><span class="p">])</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;:k&quot;</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;:k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+            <span class="n">alp</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">18</span><span class="p">)</span>
+            <span class="n">xlim</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alp</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">xlim</span><span class="p">,</span> <span class="n">xlim</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alp</span><span class="p">)</span>
+            <span class="n">rd</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alp</span><span class="p">)</span>
+            <span class="n">y00</span> <span class="o">=</span> <span class="n">rd</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xi</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y00</span><span class="p">])</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">yi</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">]))</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">-</span><span class="n">d</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">yi</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">]))</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s2">&quot;:k&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="s2">&quot;:k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="s2">&quot;box&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2024, Anna Rauch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
