@@ -10,17 +10,15 @@ setup(
     name="untie",
     version=read("VERSION").strip(),
     author="Anna Rauch",
-    description=(
-       "Trace Information Extraction (TIE) library"
-    ),
-    author_email = "contact@infogrip.ch",
-    maintainer = "Marc Monnerat",
-    maintainer_email = "marc.monnerat@swisstopo.ch",
+    description=("Trace Information Extraction (TIE) library"),
+    author_email="contact@infogrip.ch",
+    maintainer="Marc Monnerat",
+    maintainer_email="marc.monnerat@swisstopo.ch",
     long_description=read("README.md"),
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     python_requires=">=3.8",
     packages=["untie"],
-    license_files = ('LICENSE.md',),
+    license_files=("LICENSE.md",),
     install_requires=[
         "shapely>=2.0.0",
         "geocube",
@@ -31,14 +29,13 @@ setup(
         "rasterio",
         "scipy",
         "scikit-image",
-        
     ],
     package_data={
         "untie": [
             "src",
-            
         ],
     },
+    
     include_package_data=True,
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -49,11 +46,9 @@ setup(
         "Topic :: Scientific/Engineering :: GIS",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
     ],
-
-) 
+)
