@@ -17,7 +17,7 @@ setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     python_requires=">=3.8",
-    packages=["untie"],
+    packages=["untie", "untie/scripts"],
     license_files=("LICENSE.md",),
     install_requires=[
         "shapely>=2.0.0",
@@ -33,10 +33,18 @@ setup(
     package_data={
         "untie": [
             "src",
+            'src/untie/data/swissALTI3d/*',
         ],
+        "untie/scripts": [ 'scripts/*',],
+       
     },
-    
-    include_package_data=True,
+      
+   include_package_data=True,
+    entry_points={
+        'console_scripts': [
+            'untie_demo = untie.scripts.untie_demo:main',
+        ]
+    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: BSD License",
@@ -50,5 +58,6 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
 )
