@@ -10,8 +10,8 @@ display and visualize the TIE-results.
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-from TIE import TIE_general as TIEgen
-from TIE import TIE_classes as TIEclass
+from untie import TIE_general as TIEgen
+from untie import TIE_classes as TIEclass
 from mayavi import mlab
 import matplotlib.patches as mpatches
 

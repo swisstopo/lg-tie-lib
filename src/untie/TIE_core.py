@@ -10,8 +10,8 @@ import copy
 from typing import Dict, List, Tuple, Union
 
 import numpy as np
-from TIE import TIE_classes as TIEclass
-from TIE import TIE_general as TIEgen
+from untie import TIE_classes as TIEclass
+from untie import TIE_general as TIEgen
 
 
 def classifyTRACE(TRACES, pth=None):

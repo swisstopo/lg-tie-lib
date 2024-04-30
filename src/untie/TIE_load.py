@@ -15,8 +15,8 @@ from typing import Dict, List, Tuple, Union
 import geopandas as gpd
 import numpy as np
 import rasterio as rst
-from TIE import TIE_classes as TIEclass
-from TIE import TIE_general as TIEgen
+from untie import TIE_classes as TIEclass
+from untie import TIE_general as TIEgen
 from rasterio.mask import mask
 from rasterio.merge import merge
 from shapely.geometry import Polygon
