@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath('../src/'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'TIE'
+project = 'untie'
 copyright = '2018-2024, Anna Rauch'
 author = 'Anna Rauch'
 
