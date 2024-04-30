@@ -2,5 +2,6 @@ include LICENSE.md
 include VERSION
 include README.md
 include AUTHORS.md
+include untie_demo.png
 recursive-include src/untie/data *
 recursive-include src/untie/scripts/ *
